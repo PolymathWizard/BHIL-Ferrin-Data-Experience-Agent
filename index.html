@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FERRIN</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏮</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#140C06;--ink:#FFF3D6;--muted:rgba(255,243,214,.66);--hair:rgba(255,178,63,.26);--amber:#FFB23F;--mint:#34F5B4;
+ --ui:"Barlow Semi Condensed","Roboto Condensed","Arial Narrow",system-ui,sans-serif;--mark:"Saira Stencil One","Barlow Semi Condensed",Impact,sans-serif;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#140C06}}
+:root[data-theme="dark"]{--bg:#140C06}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#1A1008}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui)}
+main{max-width:860px;margin:0 auto;padding:48px 24px}
+h1{font-family:var(--mark);font-weight:400;font-size:clamp(52px,10vw,96px);letter-spacing:.06em;color:var(--amber);margin:0;line-height:.9}
+.sub{font-size:21px;margin:12px 0 30px;color:var(--muted);max-width:52ch;line-height:1.4}
+img.hero{width:100%;height:auto;display:block;border:1px solid var(--hair)}
+ul{list-style:none;padding:0;margin:28px 0;display:grid;gap:0}
+li a{display:grid;grid-template-columns:200px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--hair);color:var(--ink);text-decoration:none}
+li:last-child a{border-bottom:1px solid var(--hair)}
+li a b{font-size:20px;font-weight:600;color:var(--amber)} li a span{color:var(--muted);font-size:16.5px;line-height:1.4}
+li a:hover b{color:var(--mint)}
+:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+p.fine{color:var(--muted);font-size:14px}
+p.fine a{color:var(--ink)}
+@media (max-width:600px){li a{grid-template-columns:1fr;gap:4px}}
+</style>
+</head>
+<body><main>
+<h1>FERRIN</h1>
+<p class="sub">A salvage-refit shipboard intelligence for your Codex and ChatGPT desktop. Standing watch over your work, one manifest at a time.</p>
+<img class="hero" src="docs/images/ferrin-hero-banner.webp" alt="FERRIN, an amber lantern hologram with one mint eye and chevron fins, hovering above its gunmetal emitter puck">
+<ul>
+<li><a href="preview/"><b>Preview console</b><span>The desktop pet with Drift Ops: commands, mini-games, hidden logs and Ballast Tags.</span></a></li>
+<li><a href="experience/"><b>3D study</b><span>Watch FERRIN materialize, then take it apart: capabilities, blueprint, emitter physics, specs.</span></a></li>
+<li><a href="voice/"><b>Talk to FERRIN</b><span>Push-to-talk voice prototype, entirely in the browser.</span></a></li>
+<li><a href="sfx/"><b>Sound pack</b><span>Thirty synthesized cues and a simulated work session.</span></a></li>
+</ul>
+<p class="fine">Install the pet from <a href="dist/ferrin.zip">dist/ferrin.zip</a>. Forked from ruvnet's MIT-licensed pet package; see the README for credits. Not an official OpenAI product.</p>
+</main></body></html>

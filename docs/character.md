@@ -63,4 +63,6 @@ Dry, steady, and loyal: a quartermaster-navigator. FERRIN calls the user **"Skip
 
 ## Illustration canon vs. sprite canon
 
-The illustrations render the body as a **faceted, rounded octagonal lantern** with hub-mounted fins. The sprite spec in `tools/ferrin_spec.py` draws a **flat rounded hexagon** at 192×208. Both are FERRIN. The sprite is the simplified pet-size form. If you change the spec to match the illustrations, update this page and regenerate `docs/contact-sheet.png`.
+The illustrations and the 3D study render the body as a **faceted octagonal lantern** with hub-mounted fins. The sprite in `tools/ferrin_spec.py` draws the same faceted lantern, flattened to a ten-sided outline that reads at 192×208. Both are FERRIN. If you change the spec, regenerate `docs/contact-sheet.png` with `make art` and review every row.
+
+![FERRIN sprite contact sheet](contact-sheet.png)

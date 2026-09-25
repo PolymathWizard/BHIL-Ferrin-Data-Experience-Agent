@@ -77,3 +77,14 @@ Six secret modifiers. They are cosmetic or voice-only, they stack, and you toggl
 ## Accessibility
 
 The preview honours `prefers-reduced-motion` by showing static frames. Loops stop on their own within 5 seconds, a **Hold** button (hotkey `H`) pauses everything, and there's no audio by default.
+
+## Ship's log (memory)
+
+| Command | What FERRIN does |
+|---|---|
+| `log` | Shows what FERRIN remembers |
+| `remember <fact>` | Adds one fact; refuses passwords, keys and account numbers |
+| `forget <thing>` | Strikes every entry containing it |
+| `wipe log` | Clears everything after `wipe log confirm` |
+
+In your agent the skill keeps these in `.ferrin/log.md` or `~/.ferrin/log.md`. In the browser they live in `localStorage`, shared by the preview and voice pages.

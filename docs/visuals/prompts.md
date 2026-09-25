@@ -66,7 +66,7 @@ except where the prompt explicitly asks for blank placeholder panels.
 | `NEG-F2` Character drift | Any prompt showing FERRIN | human face, mouth, teeth, arms, legs, feet, cute chibi eyes, two eyes, round sphere body, cube body, soft glow bloom, heavy translucency, particle sparkles detached from body, blue or purple light |
 | `NEG-F3` Render quality | All prompts | gibberish text, warped letters, extra fins, asymmetric fins, melted geometry, muddy palette, oversaturated neon, lens flare streaks, watermark, signature |
 
-Engine notes: in Midjourney, put the stacks in `--no`, keep `--stylize` low (50–150) to limit house style, and pin one approved FERRIN render as `--cref`/`--sref` after the first good result. In other engines, add the stacks as a negative prompt, or append the words "Avoid:" followed by the stack.
+Engine notes: in Midjourney, put the stacks in `--no`, keep `--stylize` low (50 to 150) to limit house style, and pin one approved FERRIN render as `--cref`/`--sref` after the first good result. In other engines, add the stacks as a negative prompt, or append the words "Avoid:" followed by the stack.
 
 ---
 

@@ -20,6 +20,6 @@ Dated events trigger in the preview once per day and grant +3 Morale.
 
 | Trigger | Line |
 |---|---|
-| Dec 31 – Jan 1 · Year-End Stocktake | "Year-end stocktake: one Skipper, one lantern, no regrets." |
+| Dec 31 to Jan 1 · Year-End Stocktake | "Year-end stocktake: one Skipper, one lantern, no regrets." |
 | Install anniversary · Salvage Day | "One year since salvage. Best haul you ever made." |
-| 00:00–04:00 local · Graveyard Watch | "Graveyard watch, Skipper. Water, stretch, then more code." |
+| 00:00 to 04:00 local · Graveyard Watch | "Graveyard watch, Skipper. Water, stretch, then more code." |

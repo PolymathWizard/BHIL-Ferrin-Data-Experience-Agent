@@ -24,4 +24,4 @@ Illustrations never feed the atlas.
 - All 16 images pass the hue guard (0% saturated blue/violet above near-black).
 - The commendation badges image was flattened onto dark gunmetal and cropped to remove transparent areas.
 - `social-preview.png` (1280×640) is cropped from the hero banner. Upload it under **Settings → General → Social preview** on GitHub.
-- The illustrations show a faceted octagonal body, while the sprite spec uses a flat hexagon. See [Character → canon](../character.md#illustration-canon-vs-sprite-canon).
+- The illustrations and the sprite share the faceted lantern body. See [Character: canon](../character.md#illustration-canon-vs-sprite-canon).
