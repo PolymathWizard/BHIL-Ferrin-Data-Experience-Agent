@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FERRIN · Drift Ops sound pack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#140C06;--panel:#1E1309;--ink:#FFF3D6;--muted:rgba(255,243,214,.66);--faint:rgba(255,243,214,.36);--hair:rgba(255,178,63,.2);
+ --amber:#FFB23F;--deep:#C7771E;--mint:#34F5B4;--coral:#FF5A4E;--olive:#5B6B3A;
+ --ui:"Barlow Semi Condensed","Roboto Condensed","Arial Narrow",system-ui,sans-serif;--mark:"Saira Stencil One","Barlow Semi Condensed",Impact,sans-serif;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#140C06;--ink:#FFF3D6}}
+:root[data-theme="dark"]{--bg:#140C06;--ink:#FFF3D6}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#1A1008}}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+main{max-width:980px;margin:0 auto;padding:44px 24px 80px}
+h1{font-family:var(--mark);font-weight:400;font-size:clamp(46px,8vw,86px);letter-spacing:.05em;margin:0;color:var(--amber);line-height:.9;text-shadow:0 0 30px rgba(255,178,63,.25)}
+.sub{font-size:22px;margin:10px 0 6px;color:var(--ink)}
+.lede{font-size:17px;color:var(--muted);max-width:62ch;line-height:1.5;margin:0}
+.deck{margin:30px 0 8px;padding:18px 20px;border:1px solid var(--hair);background:var(--panel);display:grid;grid-template-columns:auto 1fr auto;gap:14px 22px;align-items:center}
+.go{background:var(--amber);color:#2a1706;border:0;padding:11px 18px;font:600 16px var(--ui);cursor:pointer;border-radius:2px}
+.go:hover{background:var(--ink)} .go[aria-pressed="true"]{background:var(--coral);color:#2a0a06}
+.status{display:flex;gap:6px;flex-wrap:wrap}
+.status span{font-size:14px;padding:4px 9px;border:1px solid var(--hair);color:var(--faint);border-radius:2px;transition:all .25s}
+.status span.on{color:#1a0f06;background:var(--amber);border-color:var(--amber)}
+.status span.on.bad{background:var(--coral);border-color:var(--coral)}
+.status span.on.ok{background:var(--mint);border-color:var(--mint)}
+.vol{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--muted)} .vol input{width:120px;accent-color:var(--amber)}
+.note{grid-column:1/-1;font-size:14px;color:var(--faint);margin:0}
+section{margin-top:40px}
+h2{font-size:15px;font-weight:600;color:var(--amber);margin:0 0 4px;letter-spacing:.02em}
+h2 small{color:var(--faint);font-weight:400;margin-left:8px}
+.row{display:grid;grid-template-columns:44px minmax(150px,210px) 1fr 70px;gap:4px 16px;align-items:center;padding:12px 0;border-top:1px solid var(--hair)}
+.row:last-child{border-bottom:1px solid var(--hair)}
+.play{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--amber);background:none;color:var(--amber);cursor:pointer;display:grid;place-items:center}
+.play:hover,.play[aria-pressed="true"]{background:var(--amber);color:#1a0f06}
+.play svg{width:14px;height:14px}
+.name{font-size:17px;font-weight:500;color:var(--ink)} .name code{font:inherit}
+.name i{display:block;font-style:normal;font-size:13.5px;color:var(--faint);margin-top:2px}
+.body p{margin:0 0 6px;font-size:15px;color:var(--muted);line-height:1.4}
+canvas{width:100%;height:34px;display:block}
+.len{text-align:right;font-size:14px;color:var(--faint)} .len b{display:block;color:var(--mint);font-weight:500;font-size:12px}
+:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+footer{margin-top:44px;font-size:14px;color:var(--faint);line-height:1.5;max-width:66ch}
+@media (max-width:680px){ .row{grid-template-columns:44px 1fr;} .body{grid-column:1/-1} .len{display:none} .deck{grid-template-columns:1fr} }
+</style></head><body><main>
+<h1>FERRIN</h1>
+<p class="sub">Drift Ops sound pack</p>
+<p class="lede">Thirty cues for a shipboard AI, synthesized entirely from code. Everything sits in D major pentatonic and signs off with the Longwake call: A, D, E, A.</p>
+<div class="deck">
+  <button class="go" id="session" aria-pressed="false">Play a work session</button>
+  <div class="status" id="status" aria-live="polite"><span data-s="materialize">Materialize</span><span data-s="running">Running</span><span data-s="waiting" class="bad">Needs you</span><span data-s="done" class="ok">Done</span><span data-s="idle">Idle</span><span data-s="stand">Stand down</span></div>
+  <label class="vol">Volume <input type="range" id="vol" min="0" max="100" value="70"></label>
+  <p class="note">The session runs about 35 seconds and shows how the loops and cues hand off as an agent's status changes.</p>
+</div>
+<div id="groups"></div>
+<footer>Rendered at 48 kHz, 16-bit mono. Serve this folder over HTTP (GitHub Pages works) so the page can load the audio files. Loops on this page play from WAV, since MP3 padding breaks seamless looping.</footer>
+</main>
+<script>
+const META=[{"id": "state-idle-loop", "group": "states", "trigger": "idle", "description": "Emitter hum with a slow twin-trap beat. Quiet bed while FERRIN stands watch.", "loop": true, "duration_s": 8.0}, {"id": "state-running-loop", "group": "states", "trigger": "running", "description": "Working: soft manifest ticks over the hum, four to a second.", "loop": true, "duration_s": 4.0}, {"id": "state-waiting-loop", "group": "states", "trigger": "waiting", "description": "Waiting on you: one patient mint ping every three seconds.", "loop": true, "duration_s": 6.0}, {"id": "state-review", "group": "states", "trigger": "review", "description": "Review: a scanline sweeps the lantern top to bottom, then two soft confirms.", "loop": false, "duration_s": 1.9}, {"id": "state-wave", "group": "states", "trigger": "wave", "description": "Wave hello: fin flutter and a rising two-note chirp.", "loop": false, "duration_s": 0.95}, {"id": "state-jump", "group": "states", "trigger": "jump", "description": "Hop: a rising blip, a beat of air, a soft landing on the beam.", "loop": false, "duration_s": 0.7}, {"id": "state-failed", "group": "states", "trigger": "failed", "description": "Fault: coral descent with a hologram flicker. Serious, never shrill.", "loop": false, "duration_s": 1.7}, {"id": "state-run", "group": "states", "trigger": "running-left / running-right", "description": "Scoot: a short hard-light whoosh with a small pitch bend.", "loop": false, "duration_s": 0.7}, {"id": "evt-materialize", "group": "events", "trigger": "app start / FERRIN appears", "description": "Full build: three pips, the column rising in three stages, the swarm gathering, the Longwake call as the optic opens.", "loop": false, "duration_s": 5.0}, {"id": "evt-dematerialize", "group": "events", "trigger": "app quit / FERRIN hides", "description": "Stand down: the lantern sweeps away and the swarm scatters to the puck.", "loop": false, "duration_s": 2.4}, {"id": "evt-emitter-on", "group": "events", "trigger": "emitter connected", "description": "Puck powers up: low thunk and three pip ticks. No hologram yet.", "loop": false, "duration_s": 1.3}, {"id": "evt-task-complete", "group": "events", "trigger": "agent finished", "description": "Task done: the full Longwake call, bright and short.", "loop": false, "duration_s": 1.3}, {"id": "evt-blocked", "group": "events", "trigger": "agent blocked / approval needed", "description": "Needs you: two coral notes, repeated once. Firm, not an alarm.", "loop": false, "duration_s": 1.1}, {"id": "evt-hail", "group": "events", "trigger": "notification", "description": "Incoming hail: two quick mint pings.", "loop": false, "duration_s": 0.9}, {"id": "ui-click", "group": "ui", "trigger": "click", "description": "Tactile tick for buttons.", "loop": false, "duration_s": 0.03}, {"id": "ui-hover", "group": "ui", "trigger": "hover", "description": "Barely-there brush for hover.", "loop": false, "duration_s": 0.05}, {"id": "ui-toggle-on", "group": "ui", "trigger": "toggle on", "description": "Switch on: up a fourth.", "loop": false, "duration_s": 0.22}, {"id": "ui-toggle-off", "group": "ui", "trigger": "toggle off", "description": "Switch off: down a fourth.", "loop": false, "duration_s": 0.22}, {"id": "ui-panel-open", "group": "ui", "trigger": "open panel", "description": "Panel unfolds: short rising air and a light tick.", "loop": false, "duration_s": 0.38}, {"id": "ui-panel-close", "group": "ui", "trigger": "close panel", "description": "Panel folds away: falling air.", "loop": false, "duration_s": 0.32}, {"id": "ui-error", "group": "ui", "trigger": "error", "description": "Invalid input: a dull double buzz, low and brief.", "loop": false, "duration_s": 0.3}, {"id": "cmd-sitrep", "group": "commands", "trigger": "$ferrin sitrep", "description": "Status report: teletype chatter and a closing tone.", "loop": false, "duration_s": 1.0}, {"id": "game-contact-ping", "group": "commands", "trigger": "contact game", "description": "Contact: a sonar-style ping with a long metallic tail.", "loop": false, "duration_s": 2.2}, {"id": "game-score", "group": "commands", "trigger": "game score", "description": "Point scored in drop or drill.", "loop": false, "duration_s": 0.4}, {"id": "game-miss", "group": "commands", "trigger": "game miss", "description": "Missed: a flat downward blip, no scolding.", "loop": false, "duration_s": 0.25}, {"id": "egg-perimeter-sweep", "group": "eggs", "trigger": "Perimeter Sweep code", "description": "Key code accepted: four compass blips (up, right, down, left) then an open chord.", "loop": false, "duration_s": 1.8}, {"id": "egg-longwake", "group": "eggs", "trigger": "LONGWAKE typed code", "description": "LONGWAKE: a distant ship horn under the call, slowed down, in a cold empty hold.", "loop": false, "duration_s": 4.5}, {"id": "egg-commendation", "group": "eggs", "trigger": "commendation unlocked", "description": "Commendation earned: a bright pentatonic arpeggio with a shimmer.", "loop": false, "duration_s": 1.8}, {"id": "egg-log-unlocked", "group": "eggs", "trigger": "LW log unlocked", "description": "Lore log found: tape spin-up, teletype, and the first two notes of the call.", "loop": false, "duration_s": 1.5}, {"id": "egg-ballast-tag", "group": "eggs", "trigger": "Ballast Tag earned", "description": "Ballast Tag stamped: a cargo stamp thunk with a ring.", "loop": false, "duration_s": 1.1}]; const DATA={"state-idle-loop": "wav/state-idle-loop.wav", "state-running-loop": "wav/state-running-loop.wav", "state-waiting-loop": "wav/state-waiting-loop.wav", "state-review": "mp3/state-review.mp3", "state-wave": "mp3/state-wave.mp3", "state-jump": "mp3/state-jump.mp3", "state-failed": "mp3/state-failed.mp3", "state-run": "mp3/state-run.mp3", "evt-materialize": "mp3/evt-materialize.mp3", "evt-dematerialize": "mp3/evt-dematerialize.mp3", "evt-emitter-on": "mp3/evt-emitter-on.mp3", "evt-task-complete": "mp3/evt-task-complete.mp3", "evt-blocked": "mp3/evt-blocked.mp3", "evt-hail": "mp3/evt-hail.mp3", "ui-click": "mp3/ui-click.mp3", "ui-hover": "mp3/ui-hover.mp3", "ui-toggle-on": "mp3/ui-toggle-on.mp3", "ui-toggle-off": "mp3/ui-toggle-off.mp3", "ui-panel-open": "mp3/ui-panel-open.mp3", "ui-panel-close": "mp3/ui-panel-close.mp3", "ui-error": "mp3/ui-error.mp3", "cmd-sitrep": "mp3/cmd-sitrep.mp3", "game-contact-ping": "mp3/game-contact-ping.mp3", "game-score": "mp3/game-score.mp3", "game-miss": "mp3/game-miss.mp3", "egg-perimeter-sweep": "mp3/egg-perimeter-sweep.mp3", "egg-longwake": "mp3/egg-longwake.mp3", "egg-commendation": "mp3/egg-commendation.mp3", "egg-log-unlocked": "mp3/egg-log-unlocked.mp3", "egg-ballast-tag": "mp3/egg-ballast-tag.mp3"};
+const GROUPS=[['states','Sprite states','driven by agent status'],['events','Lifecycle events',''],['ui','Interface',''],['commands','Drift Ops commands and games',''],['eggs','Easter eggs','']];
+let ctx=null, master=null; const bufs={}; const playing={};
+function ensure(){ if(!ctx){ ctx=new (window.AudioContext||window.webkitAudioContext)(); master=ctx.createGain(); master.gain.value=.7; master.connect(ctx.destination); } if(ctx.state!=='running') ctx.resume(); return ctx; }
+async function buf(id){ ensure(); if(bufs[id]) return bufs[id]; const ab=await (await fetch(DATA[id])).arrayBuffer(); bufs[id]=await ctx.decodeAudioData(ab); return bufs[id]; }
+const PLAY='<svg viewBox="0 0 14 14"><path d="M3 1.5 L12 7 L3 12.5Z" fill="currentColor"/></svg>', STOP='<svg viewBox="0 0 14 14"><rect x="2.5" y="2.5" width="9" height="9" fill="currentColor"/></svg>';
+function btnState(id,on){ const b=document.querySelector(`[data-id="${id}"]`); if(b){ b.setAttribute('aria-pressed',on); b.innerHTML=on?STOP:PLAY; } }
+async function play(id,{loop=false,fade=0}={}){ const b=await buf(id); stop(id,0); const s=ctx.createBufferSource(), g=ctx.createGain(); s.buffer=b; s.loop=loop; const t=ctx.currentTime;
+  g.gain.setValueAtTime(fade?0:1,t); if(fade) g.gain.linearRampToValueAtTime(1,t+fade); s.connect(g).connect(master); s.start();
+  playing[id]={s,g,t0:t,dur:b.duration,loop}; btnState(id,true); s.onended=()=>{ if(playing[id]&&playing[id].s===s){ delete playing[id]; btnState(id,false);} }; }
+function stop(id,fade=.4){ const p=playing[id]; if(!p) return; const t=ctx.currentTime; p.g.gain.cancelScheduledValues(t); p.g.gain.setValueAtTime(p.g.gain.value,t); p.g.gain.linearRampToValueAtTime(0,t+fade); p.s.stop(t+fade+.02); delete playing[id]; btnState(id,false); }
+const root=document.getElementById('groups');
+GROUPS.forEach(([g,title,sub])=>{ const sec=document.createElement('section'); sec.innerHTML=`<h2>${title}${sub?`<small>${sub}</small>`:''}</h2>`;
+  META.filter(m=>m.group===g).forEach(m=>{ const r=document.createElement('div'); r.className='row';
+    r.innerHTML=`<button class="play" data-id="${m.id}" aria-pressed="false" aria-label="Play ${m.id}">${PLAY}</button><div class="name"><code>${m.id}</code><i>${m.trigger}</i></div><div class="body"><p>${m.description}</p><canvas data-w="${m.id}" aria-hidden="true"></canvas></div><div class="len">${m.duration_s.toFixed(2)} s${m.loop?'<b>Loops</b>':''}</div>`;
+    sec.appendChild(r); r.querySelector('.play').onclick=()=>{ playing[m.id]? stop(m.id, m.loop?.5:.05) : play(m.id,{loop:m.loop,fade:m.loop?.4:0}); }; });
+  root.appendChild(sec); });
+// waveforms: decode lazily with an offline-free approach once the context exists; before that draw from a quick decode
+async function drawWave(id){ const c=document.querySelector(`[data-w="${id}"]`); const b=await buf(id); const dpr=Math.min(2,devicePixelRatio||1); const W=c.clientWidth*dpr,H=c.clientHeight*dpr; c.width=W; c.height=H;
+  const x=c.getContext('2d'); const d=b.getChannelData(0); const step=Math.max(1,Math.floor(d.length/W)); let pk=0; for(let i=0;i<d.length;i+=7) pk=Math.max(pk,Math.abs(d[i])); pk=pk||1;
+  c._draw=(prog)=>{ x.clearRect(0,0,W,H); for(let i=0;i<W;i++){ let mn=1,mx=-1; for(let j=i*step;j<(i+1)*step&&j<d.length;j+=2){ const v=d[j]; if(v<mn)mn=v; if(v>mx)mx=v; }
+      x.fillStyle = i/W<prog ? '#FFB23F' : 'rgba(255,178,63,.38)'; const y0=H/2-mx/pk*H*.46, y1=H/2-mn/pk*H*.46; x.fillRect(i,y0,1,Math.max(1,y1-y0)); } };
+  c._draw(0); }
+let wavesDrawn=false;
+function drawAll(){ if(wavesDrawn) return; wavesDrawn=true; META.forEach(m=>drawWave(m.id)); }
+// Draw waveforms on first interaction (AudioContext needs a gesture on some browsers); try immediately too.
+try{ drawAll(); }catch(e){ wavesDrawn=false; }
+addEventListener('pointerdown',drawAll,{once:true});
+(function tick(){ if(ctx) for(const id in playing){ const p=playing[id]; const c=document.querySelector(`[data-w="${id}"]`); if(c&&c._draw){ const el=ctx.currentTime-p.t0; c._draw(p.loop?(el%p.dur)/p.dur:Math.min(1,el/p.dur)); c._last=true; } }
+  document.querySelectorAll('canvas').forEach(c=>{ if(c._last&&!playing[c.dataset.w]){ c._last=false; c._draw&&c._draw(0);} }); requestAnimationFrame(tick); })();
+document.getElementById('vol').oninput=e=>{ ensure(); master.gain.setTargetAtTime(e.target.value/100,ctx.currentTime,.03); };
+// work session demo
+const statusEls=[...document.querySelectorAll('#status span')]; function show(s){ statusEls.forEach(e=>e.classList.toggle('on',e.dataset.s===s)); }
+let timers=[]; const sBtn=document.getElementById('session');
+function stopSession(){ timers.forEach(clearTimeout); timers=[]; Object.keys(playing).forEach(id=>stop(id,.4)); show(''); sBtn.setAttribute('aria-pressed','false'); sBtn.textContent='Play a work session'; }
+sBtn.onclick=async()=>{ if(sBtn.getAttribute('aria-pressed')==='true'){ stopSession(); return; } ensure(); await Promise.all(META.map(m=>buf(m.id)));
+  sBtn.setAttribute('aria-pressed','true'); sBtn.textContent='Stop session';
+  const at=(s,f)=>timers.push(setTimeout(f,s*1000)); const loop=(id)=>{ ['state-idle-loop','state-running-loop','state-waiting-loop'].forEach(l=>{ if(l!==id) stop(l,.6); }); if(id) play(id,{loop:true,fade:.6}); };
+  at(0,()=>{ show('materialize'); play('evt-materialize'); });
+  at(4.6,()=>{ show('running'); play('ui-panel-open'); loop('state-running-loop'); });
+  at(9,()=>play('cmd-sitrep'));
+  at(12,()=>{ show('waiting'); play('evt-blocked'); loop('state-waiting-loop'); });
+  at(18.5,()=>{ play('ui-toggle-on'); show('running'); loop('state-running-loop'); });
+  at(22,()=>play('state-review'));
+  at(24.5,()=>{ show('done'); loop(null); play('evt-task-complete'); });
+  at(25.6,()=>play('state-wave'));
+  at(27,()=>{ show('idle'); loop('state-idle-loop'); });
+  at(32.5,()=>{ show('stand'); loop(null); play('evt-dematerialize'); });
+  at(35.2,stopSession); };
+</script></body></html>

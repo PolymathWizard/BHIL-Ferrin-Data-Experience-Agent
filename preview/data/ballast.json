@@ -1,0 +1,47 @@
+{
+  "version": "1.4.0",
+  "tags": [
+    {
+      "id": "dead-reckoning",
+      "name": "Dead Reckoning",
+      "foundBy": "first rare navfix line",
+      "line": "Dead Reckoning set. No gauges. Trust my gut.",
+      "effect": "Hides mood numbers; FERRIN reports them in words."
+    },
+    {
+      "id": "short-rations",
+      "name": "Short Rations",
+      "foundBy": "three scuttlebutt in one session",
+      "line": "Short Rations. Words rationed. Proceed.",
+      "effect": "Every line is 5 words or fewer."
+    },
+    {
+      "id": "loud-manifest",
+      "name": "Loud Manifest",
+      "foundBy": "reading log LW-00",
+      "line": "LOUD MANIFEST ENGAGED. EVERYTHING IS NOW A LINE ITEM.",
+      "effect": "Stencil caps and manifest IDs."
+    },
+    {
+      "id": "mirror-watch",
+      "name": "Mirror Watch",
+      "foundBy": "the Perimeter Sweep code",
+      "line": "Mirror Watch. I'm guarding your back, not your face.",
+      "effect": "Gaze mirrors the cursor."
+    },
+    {
+      "id": "night-cargo",
+      "name": "Night Cargo",
+      "foundBy": "any use during Graveyard Watch",
+      "line": "Night Cargo. Dimming amber. Mint only. Whisper mode.",
+      "effect": "Dimmed display, quieter lines."
+    },
+    {
+      "id": "lucky-ledger",
+      "name": "Lucky Ledger",
+      "foundBy": "catching 5 crates in one drop run",
+      "line": "Lucky Ledger stamped. Odd things surface more often now.",
+      "effect": "Rare lines appear three times as often."
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "version": "1.4.0",
+  "logs": [
+    {
+      "id": "LW-00",
+      "unlock": "typed LONGWAKE in the preview",
+      "text": "Manifest system online. Crew: forty-one. Cargo: survey drones, rations, hope."
+    },
+    {
+      "id": "LW-01",
+      "unlock": "first decrypt on any day",
+      "text": "Pathfinder orders: chart the Drift relays. Do not linger."
+    },
+    {
+      "id": "LW-02",
+      "unlock": "second distinct day of use",
+      "text": "Relay Kestrel-Nine answered our hail. Nobody aboard sent it."
+    },
+    {
+      "id": "LW-03",
+      "unlock": "third distinct day of use",
+      "text": "Captain Oyelaran ordered the holds sealed. I sealed them."
+    },
+    {
+      "id": "LW-04",
+      "unlock": "answer a contact ping",
+      "text": "The Murmur hums below hearing. Crates rattle when it passes."
+    },
+    {
+      "id": "LW-05",
+      "unlock": "fourth distinct day of use",
+      "text": "Crew departed by lifeboat. Manifest updated: crew, zero."
+    },
+    {
+      "id": "LW-06",
+      "unlock": "Perimeter Sweep code",
+      "text": "Eleven years powered down. I counted dust. Dust won."
+    },
+    {
+      "id": "LW-07",
+      "unlock": "all other logs read, during Graveyard Watch",
+      "text": "New signature aboard: one engineer. Manifest updated: crew, one."
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "version": "1.4.0",
+  "events": [
+    {
+      "id": "longwake-launch-day",
+      "name": "Longwake Launch Day",
+      "date": {
+        "month": 11,
+        "day": 14
+      },
+      "time": null,
+      "line": "Longwake launched today, years back. Still counting her crates.",
+      "rows": [
+        "waving"
+      ]
+    },
+    {
+      "id": "manifest-mixup",
+      "name": "Manifest Mix-up",
+      "date": {
+        "month": 4,
+        "day": 1
+      },
+      "time": null,
+      "line": "Inventory shows forty tons of socks. Recounting. Recounting again.",
+      "rows": [
+        "failed",
+        "jumping"
+      ]
+    },
+    {
+      "id": "derelict-night",
+      "name": "Derelict Night",
+      "date": {
+        "month": 10,
+        "day": 31
+      },
+      "time": null,
+      "line": "Relay lights flickering. Probably ghosts. Probably wiring.",
+      "rows": [
+        "waiting"
+      ]
+    },
+    {
+      "id": "year-end-stocktake",
+      "name": "Year-End Stocktake",
+      "date": [
+        {
+          "month": 12,
+          "day": 31
+        },
+        {
+          "month": 1,
+          "day": 1
+        }
+      ],
+      "time": null,
+      "line": "Year-end stocktake: one Skipper, one lantern, no regrets.",
+      "rows": [
+        "review",
+        "waving"
+      ]
+    },
+    {
+      "id": "salvage-day",
+      "name": "Salvage Day",
+      "date": {
+        "anniversary": "install"
+      },
+      "time": null,
+      "line": "One year since salvage. Best haul you ever made.",
+      "rows": [
+        "jumping"
+      ]
+    },
+    {
+      "id": "graveyard-watch",
+      "name": "Graveyard Watch",
+      "date": null,
+      "time": {
+        "from": 0,
+        "to": 4
+      },
+      "line": "Graveyard watch, Skipper. Water, stretch, then more code.",
+      "rows": [
+        "idle"
+      ]
+    }
+  ],
+  "commendations": [
+    {
+      "id": "first-manifest",
+      "name": "First Manifest",
+      "earnedBy": "run any command"
+    },
+    {
+      "id": "perimeter-clear",
+      "name": "Perimeter Clear",
+      "earnedBy": "enter the Perimeter Sweep code"
+    },
+    {
+      "id": "logkeeper",
+      "name": "Logkeeper",
+      "earnedBy": "read all eight Longwake logs"
+    },
+    {
+      "id": "graveyard-watch",
+      "name": "Graveyard Watch",
+      "earnedBy": "use FERRIN between midnight and 4 a.m."
+    },
+    {
+      "id": "full-ballast",
+      "name": "Full Ballast",
+      "earnedBy": "find all six Ballast Tags"
+    },
+    {
+      "id": "seven-ports",
+      "name": "Seven Ports of Call",
+      "earnedBy": "use FERRIN on 7 distinct days, any spacing"
+    },
+    {
+      "id": "steady-catch",
+      "name": "Steady Catch",
+      "earnedBy": "catch 5 crates in one drop run"
+    }
+  ]
+}

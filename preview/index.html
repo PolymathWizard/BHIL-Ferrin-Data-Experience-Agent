@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FERRIN preview console</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏮</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#140C06;--panel:#1E1309;--ink:#FFF3D6;--muted:rgba(255,243,214,.66);--faint:rgba(255,243,214,.38);--hair:rgba(255,178,63,.26);
+ --amber:#FFB23F;--deep:#C7771E;--mint:#34F5B4;--coral:#FF5A4E;--olive:#5B6B3A;
+ --ui:"Barlow Semi Condensed","Roboto Condensed","Arial Narrow",system-ui,sans-serif;--mark:"Saira Stencil One","Barlow Semi Condensed",Impact,sans-serif;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#140C06}}
+:root[data-theme="dark"]{--bg:#140C06}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#1A1008}}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+main{max-width:1100px;margin:0 auto;padding:28px 22px 40px;display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:26px}
+header{grid-column:1/-1;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+h1{margin:0;font-family:var(--mark);font-weight:400;font-size:clamp(40px,6vw,64px);letter-spacing:.06em;line-height:.9;color:var(--amber)}
+header p{margin:6px 0 0;color:var(--muted);font-size:16px}
+.bar{display:flex;gap:8px;flex-wrap:wrap}
+.btn{background:none;border:1px solid var(--hair);color:var(--ink);padding:7px 12px;font:inherit;font-size:14.5px;border-radius:2px;cursor:pointer}
+.btn:hover{border-color:var(--amber);color:var(--amber)}
+.btn[aria-pressed="true"]{border-color:var(--mint);color:var(--mint)}
+.stage{position:relative;background:radial-gradient(ellipse at 50% 70%,rgba(255,178,63,.12),transparent 65%),var(--panel);border:1px solid var(--hair);aspect-ratio:192/208}
+.stage canvas{width:100%;height:100%;display:block}
+.stage.night canvas{filter:brightness(.62) saturate(.8)}
+#puck{position:absolute;left:30%;right:30%;bottom:6%;height:12%;background:none;border:0;cursor:pointer;border-radius:50%}
+#crate{position:absolute;left:50%;top:0;width:34px;height:28px;margin-left:-17px;background:var(--deep);border:3px solid #3A2410;border-radius:2px;display:none}
+#crate::after{content:"";position:absolute;inset:5px 9px;border-left:3px solid #3A2410;border-right:3px solid #3A2410}
+.said{margin:12px 0 0;min-height:3.2em;font-size:19px;line-height:1.35;color:var(--core,#FFF3D6)}
+.said small{display:block;color:var(--amber);font-size:12.5px;margin-top:2px}
+.gauges{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.gauge span{display:flex;justify-content:space-between;font-size:14px;color:var(--muted)}
+.gauge i{display:block;height:6px;background:rgba(255,178,63,.14);margin-top:4px}
+.gauge i b{display:block;height:100%;background:var(--amber);transition:width .6s}
+.sim{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.console{display:flex;flex-direction:column;border:1px solid var(--hair);background:var(--panel);min-height:520px}
+#log{flex:1;overflow:auto;padding:14px 16px;font-size:15.5px;line-height:1.45;max-height:560px}
+#log p{margin:0 0 8px} #log .u{color:var(--muted)} #log .u::before{content:"> ";color:var(--faint)}
+#log .f{color:var(--ink)} #log .f b{color:var(--amber);font-weight:600;margin-right:6px}
+#log .sys{color:var(--mint);font-size:14px}
+form{display:flex;border-top:1px solid var(--hair)}
+#cmd{flex:1;background:transparent;border:0;color:var(--ink);font:inherit;font-size:16px;padding:12px 14px}
+#cmd::placeholder{color:var(--faint)}
+form button{background:var(--amber);border:0;color:#2a1706;font:inherit;font-weight:600;padding:0 18px;cursor:pointer}
+details{border-top:1px solid var(--hair);padding:8px 16px;font-size:14.5px;color:var(--muted)}
+details summary{cursor:pointer;color:var(--ink)}
+details ul{margin:6px 0 4px;padding-left:18px}
+:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+footer{grid-column:1/-1;color:var(--faint);font-size:13.5px}
+footer a{color:var(--muted)}
+@media (max-width:760px){main{grid-template-columns:1fr}.console{min-height:380px}}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div><h1>FERRIN</h1><p>Preview console. Type <code>help</code>, or just say hello.</p></div>
+    <div class="bar">
+      <button class="btn" id="hold" aria-pressed="false" title="Pause all animation (H)">Hold (H)</button>
+      <button class="btn" id="sound" aria-pressed="false" title="Sound effects are off by default">Sound off</button>
+    </div>
+  </header>
+  <section aria-label="FERRIN">
+    <div class="stage" id="stage">
+      <canvas id="pet" width="384" height="416" role="img" aria-label="FERRIN, an amber lantern hologram above its emitter puck"></canvas>
+      <button id="puck" aria-label="Emitter puck"></button>
+      <div id="crate" aria-hidden="true"></div>
+    </div>
+    <p class="said" id="said" aria-live="polite"></p>
+    <div class="gauges" aria-label="Mood">
+      <div class="gauge"><span>Power <em id="gp"></em></span><i><b id="bp"></b></i></div>
+      <div class="gauge"><span>Sync <em id="gs"></em></span><i><b id="bs"></b></i></div>
+      <div class="gauge"><span>Morale <em id="gm"></em></span><i><b id="bm"></b></i></div>
+    </div>
+    <div class="sim">
+      <button class="btn" id="work">Simulate work</button>
+      <button class="btn" id="error">Simulate error</button>
+      <button class="btn" id="dock">Dock</button>
+    </div>
+  </section>
+  <section class="console" aria-label="Console">
+    <div id="log" aria-live="polite"></div>
+    <form id="form" autocomplete="off"><label class="sr" for="cmd" style="position:absolute;left:-9999px">Command</label>
+      <input id="cmd" placeholder="sitrep, hail, scuttlebutt, drop…" maxlength="120"><button>Send</button></form>
+    <details><summary>Ledger</summary><ul id="ledger"></ul></details>
+  </section>
+  <footer>Drift Ops preview for the FERRIN desktop pet. Progress and the ship's log are saved in this browser only. <a href="../voice/">Talk to FERRIN</a> · <a href="../experience/">3D study</a> · <a href="../sfx/">Sound pack</a></footer>
+</main>
+<script src="../shared/ferrin-memory.js"></script>
+<script type="module" src="ferrin.js"></script>
+</body>
+</html>

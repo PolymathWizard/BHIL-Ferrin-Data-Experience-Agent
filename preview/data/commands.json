@@ -1,0 +1,1321 @@
+{
+  "$schema": "./commands.schema.json",
+  "version": "1.4.0",
+  "commands": [
+    {
+      "id": "sitrep",
+      "category": "status",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "sitrep",
+          "status report"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Holds sealed, emitter warm, Skipper upright. Good ledger.",
+          "weight": 10
+        },
+        {
+          "text": "Power {p}, Sync {s}, Morale {m}. All accounted for.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "review",
+        "idle"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [
+        "commendation:first-manifest"
+      ],
+      "requires": []
+    },
+    {
+      "id": "hull",
+      "category": "status",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "hull"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Hull manifest: three dents, zero leaks, one stubborn hatch.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "review"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "navfix",
+      "category": "status",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "navfix"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Holding off Relay Kestrel-Nine. Drift current mild.",
+          "weight": 10
+        },
+        {
+          "text": "Position unknown. Kidding. Always know where the cargo is.",
+          "weight": 1
+        }
+      ],
+      "rows": [
+        "look:0",
+        "look:4",
+        "look:8",
+        "look:12",
+        "idle"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 2,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [
+        "ballast:dead-reckoning@rare"
+      ],
+      "requires": []
+    },
+    {
+      "id": "ward",
+      "category": "status",
+      "surfaces": [
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "ward"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Ward lattice lit. Sharp things bounce, Skipper.",
+          "weight": 10,
+          "when": "up"
+        },
+        {
+          "text": "Ward down. Saving amps for the coffee heater.",
+          "weight": 10,
+          "when": "down"
+        }
+      ],
+      "rows": [
+        "jumping",
+        "idle"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": -5,
+        "sync": 0,
+        "morale": 5
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": [],
+      "notes": "ward up | ward down"
+    },
+    {
+      "id": "hail",
+      "category": "banter",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "hail",
+          "hello",
+          "hi",
+          "hello ferrin"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Hail received. Manifest confirms one Skipper, present.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "waving"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 3
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "scuttlebutt",
+      "category": "banter",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "scuttlebutt",
+          "joke",
+          "tell me a joke"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Why'd the relay quit? Nobody ever answered its calls.",
+          "weight": 10
+        },
+        {
+          "text": "Heard Tender Three hoards bolts. Unconfirmed. Probably true.",
+          "weight": 10
+        },
+        {
+          "text": "Crate walked off the manifest. Found it napping in hold four.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "jumping"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 5
+      },
+      "rarity": "standard",
+      "unlocks": [
+        "ballast:short-rations@3-per-session"
+      ],
+      "requires": []
+    },
+    {
+      "id": "inspect",
+      "category": "banter",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "inspect"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Inspecting. Crates stacked neat. One loose strap, maybe.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "review"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 2,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": [],
+      "notes": "Skill offers a genuine review after the line."
+    },
+    {
+      "id": "sentience",
+      "category": "banter",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "sentience",
+          "are you alive",
+          "alive"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "I'm a cargo manifest with opinions. Close enough.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "idle"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "rumored",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "thanks",
+      "category": "banter",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "thanks",
+          "thank you",
+          "thanks ferrin"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Logged under morale, surplus. Carry on, Skipper.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "waving"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 2
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "scrub",
+      "category": "banter",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "scrub"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Scrubbed launch. Crates intact. We reload and go.",
+          "weight": 10
+        },
+        {
+          "text": "Failure's just cargo in the wrong hold. Re-stow.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "failed",
+        "idle"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 3,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": [],
+      "notes": "Never lowers Morale."
+    },
+    {
+      "id": "drop",
+      "category": "mini-game",
+      "surfaces": [
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "drop"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Drop crate inbound. Catch it, Skipper. Space bar.",
+          "weight": 10
+        },
+        {
+          "text": "Clean catch. Tender Two owes me a bolt.",
+          "weight": 10,
+          "when": "hit"
+        },
+        {
+          "text": "Crate bounced. Crates do that. Another's inbound.",
+          "weight": 10,
+          "when": "miss"
+        }
+      ],
+      "rows": [
+        "waiting",
+        "jumping"
+      ],
+      "reducedMotionRows": [
+        "waiting"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 5
+      },
+      "rarity": "standard",
+      "unlocks": [
+        "ballast:lucky-ledger@5-catches",
+        "commendation:steady-catch"
+      ],
+      "requires": []
+    },
+    {
+      "id": "muster",
+      "category": "squad-ops",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "muster"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Tenders One through Four present. Five is recharging, allegedly.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "waving"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 2
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "drill",
+      "category": "mini-game",
+      "surfaces": [
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "drill"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Bearing drill. Match my gaze with the arrow keys.",
+          "weight": 10
+        },
+        {
+          "text": "Four for four. You'd pass Pathfinder inspection.",
+          "weight": 10,
+          "when": "win"
+        },
+        {
+          "text": "Close enough. Bearings drift. So do Skippers.",
+          "weight": 10,
+          "when": "partial"
+        }
+      ],
+      "rows": [
+        "look:0",
+        "look:4",
+        "look:8",
+        "look:12"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 2,
+        "morale": 0
+      },
+      "rarity": "rumored",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "contact",
+      "category": "mini-game",
+      "surfaces": [
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "contact"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Murmur ping, bearing two-seven-zero. Ward or go dark?",
+          "weight": 10
+        },
+        {
+          "text": "Running dark. Lantern shuttered. Breathe quiet, Skipper.",
+          "weight": 10,
+          "when": "dark"
+        },
+        {
+          "text": "Ward lit. The ping slides past us. Good call.",
+          "weight": 10,
+          "when": "ward"
+        }
+      ],
+      "rows": [
+        "waiting",
+        "review"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 3,
+        "morale": 0
+      },
+      "rarity": "rumored",
+      "unlocks": [
+        "log:LW-04"
+      ],
+      "requires": []
+    },
+    {
+      "id": "haul",
+      "category": "squad-ops",
+      "surfaces": [
+        "skill"
+      ],
+      "triggers": {
+        "verbs": [
+          "haul"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Manifest drafted. Three crates, one route, zero heroics.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "running"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 2,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": [],
+      "notes": "Skill adds a 3-item checklist for the task."
+    },
+    {
+      "id": "longwake",
+      "category": "lore",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "longwake"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "I counted crates aboard the Longwake. Then nobody came back.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "idle",
+        "look:13"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "logs",
+      "category": "lore",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "logs",
+          "decrypt"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Log {id} decrypted. Water-damaged, but legible. Mostly.",
+          "weight": 10
+        },
+        {
+          "text": "Logs recovered: {k} of eight. The rest are still sealed.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "review"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 2
+      },
+      "rarity": "hidden",
+      "unlocks": [],
+      "requires": [],
+      "notes": "decrypt LW-0n reads a found log from logs.json"
+    },
+    {
+      "id": "tidewater",
+      "category": "lore",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "tidewater"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Tidewater Compact built ships to map, not to fight.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "idle"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "salvage",
+      "category": "lore",
+      "surfaces": [
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "salvage"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "You pulled me from a relay locker {n} days ago.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "waving"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 2
+      },
+      "rarity": "rumored",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "ballast",
+      "category": "secret-hub",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "ballast"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Ballast tags found: {k} of six. Rest are aboard somewhere.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "review"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "hidden",
+      "unlocks": [],
+      "requires": [],
+      "notes": "ballast <name> on|off toggles a found tag"
+    },
+    {
+      "id": "perimeter-sweep",
+      "category": "cheat",
+      "surfaces": [
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [],
+        "keys": [
+          "ArrowUp",
+          "ArrowRight",
+          "ArrowDown",
+          "ArrowLeft",
+          "ArrowUp",
+          "ArrowRight",
+          "ArrowDown",
+          "ArrowLeft",
+          "Enter"
+        ],
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Perimeter clear. Sixteen bearings checked. Nothing boards uninvited.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "look:0",
+        "look:1",
+        "look:2",
+        "look:3",
+        "look:4",
+        "look:5",
+        "look:6",
+        "look:7",
+        "look:8",
+        "look:9",
+        "look:10",
+        "look:11",
+        "look:12",
+        "look:13",
+        "look:14",
+        "look:15"
+      ],
+      "reducedMotionRows": [
+        "look:0",
+        "look:4",
+        "look:8",
+        "look:12"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 5,
+        "morale": 0
+      },
+      "rarity": "hidden",
+      "unlocks": [
+        "log:LW-06",
+        "ballast:mirror-watch",
+        "commendation:perimeter-clear"
+      ],
+      "requires": []
+    },
+    {
+      "id": "hull-id",
+      "category": "hidden-input",
+      "surfaces": [
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [],
+        "keys": [
+          "l",
+          "o",
+          "n",
+          "g",
+          "w",
+          "a",
+          "k",
+          "e"
+        ],
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "That name... Hull ID accepted. Log LW-00 unsealed.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "review"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 2
+      },
+      "rarity": "hidden",
+      "unlocks": [
+        "log:LW-00"
+      ],
+      "requires": []
+    },
+    {
+      "id": "puck-tickle",
+      "category": "hidden-input",
+      "surfaces": [
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [],
+        "keys": null,
+        "clicks": {
+          "target": "puck",
+          "count": 5,
+          "windowMs": 2000
+        },
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Easy on the puck, Skipper. That tickles the capacitors.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "jumping"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "hidden",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "long-idle",
+      "category": "hidden-input",
+      "surfaces": [
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Standing watch. Any key brings me round.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "waiting"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "hidden",
+      "unlocks": [],
+      "requires": [],
+      "notes": "After 10 minutes without input."
+    },
+    {
+      "id": "commendations",
+      "category": "achievements",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "commendations",
+          "medals"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Commendations ledger: {k} stamped. The rest wait patiently.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "review"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "help",
+      "category": "meta",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "help",
+          "commands",
+          "?"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Standard manifest: sitrep, hull, navfix, hail, scuttlebutt, inspect.",
+          "weight": 10
+        },
+        {
+          "text": "Also: thanks, scrub, drop, muster, haul, longwake, log, remember.",
+          "weight": 10
+        },
+        {
+          "text": "Three unlisted entries exist. I'm not saying which.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "idle"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "ship-log",
+      "category": "memory",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "log",
+          "ship's log",
+          "ships log"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Ship's log holds {k} entries. Latest: {latest}.",
+          "weight": 10
+        },
+        {
+          "text": "Log's empty, Skipper. Tell me something worth keeping.",
+          "weight": 10,
+          "when": "empty"
+        }
+      ],
+      "rows": [
+        "review"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "remember",
+      "category": "memory",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "remember",
+          "note"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Logged. I'll keep that in the manifest.",
+          "weight": 10
+        },
+        {
+          "text": "Not logging that. Keys and passwords stay off the books.",
+          "weight": 10,
+          "when": "secret"
+        },
+        {
+          "text": "Log's switched off, Skipper. Nothing recorded.",
+          "weight": 10,
+          "when": "off"
+        }
+      ],
+      "rows": [
+        "review"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "forget",
+      "category": "memory",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "forget"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "Struck {n} from the log.",
+          "weight": 10
+        },
+        {
+          "text": "Nothing like that in the log.",
+          "weight": 10,
+          "when": "none"
+        }
+      ],
+      "rows": [
+        "idle"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "wipe-log",
+      "category": "memory",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [
+          "wipe log"
+        ],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "That clears every page. Say wipe log confirm.",
+          "weight": 10
+        },
+        {
+          "text": "Log wiped. Clean pages, Skipper.",
+          "weight": 10,
+          "when": "done"
+        }
+      ],
+      "rows": [
+        "idle"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": []
+    },
+    {
+      "id": "unknown",
+      "category": "meta",
+      "surfaces": [
+        "skill",
+        "preview"
+      ],
+      "triggers": {
+        "verbs": [],
+        "keys": null,
+        "clicks": null,
+        "date": null,
+        "time": null
+      },
+      "lines": [
+        {
+          "text": "No manifest entry for that, Skipper. Try help.",
+          "weight": 10
+        }
+      ],
+      "rows": [
+        "idle"
+      ],
+      "reducedMotionRows": [
+        "idle"
+      ],
+      "mood": {
+        "power": 0,
+        "sync": 0,
+        "morale": 0
+      },
+      "rarity": "standard",
+      "unlocks": [],
+      "requires": []
+    }
+  ]
+}

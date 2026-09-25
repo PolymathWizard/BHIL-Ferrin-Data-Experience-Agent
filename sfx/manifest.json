@@ -1,0 +1,461 @@
+{
+  "name": "FERRIN Drift Ops SFX",
+  "version": "1.0.0",
+  "sample_rate": 48000,
+  "channels": 1,
+  "bit_depth": 16,
+  "key": "D major pentatonic",
+  "motif": "Longwake call: A4 D5 E5 A5",
+  "sounds": [
+    {
+      "id": "state-idle-loop",
+      "group": "states",
+      "trigger": "idle",
+      "description": "Emitter hum with a slow twin-trap beat. Quiet bed while FERRIN stands watch.",
+      "loop": true,
+      "duration_s": 8.0,
+      "rms_dbfs": -34.0,
+      "peak_dbfs": -25.3,
+      "files": {
+        "wav": "wav/state-idle-loop.wav",
+        "ogg": "ogg/state-idle-loop.ogg",
+        "mp3": "mp3/state-idle-loop.mp3"
+      }
+    },
+    {
+      "id": "state-running-loop",
+      "group": "states",
+      "trigger": "running",
+      "description": "Working: soft manifest ticks over the hum, four to a second.",
+      "loop": true,
+      "duration_s": 4.0,
+      "rms_dbfs": -30.0,
+      "peak_dbfs": -19.5,
+      "files": {
+        "wav": "wav/state-running-loop.wav",
+        "ogg": "ogg/state-running-loop.ogg",
+        "mp3": "mp3/state-running-loop.mp3"
+      }
+    },
+    {
+      "id": "state-waiting-loop",
+      "group": "states",
+      "trigger": "waiting",
+      "description": "Waiting on you: one patient mint ping every three seconds.",
+      "loop": true,
+      "duration_s": 6.0,
+      "rms_dbfs": -32.0,
+      "peak_dbfs": -18.5,
+      "files": {
+        "wav": "wav/state-waiting-loop.wav",
+        "ogg": "ogg/state-waiting-loop.ogg",
+        "mp3": "mp3/state-waiting-loop.mp3"
+      }
+    },
+    {
+      "id": "state-review",
+      "group": "states",
+      "trigger": "review",
+      "description": "Review: a scanline sweeps the lantern top to bottom, then two soft confirms.",
+      "loop": false,
+      "duration_s": 1.9,
+      "rms_dbfs": -24.0,
+      "peak_dbfs": -9.6,
+      "files": {
+        "wav": "wav/state-review.wav",
+        "ogg": "ogg/state-review.ogg",
+        "mp3": "mp3/state-review.mp3"
+      }
+    },
+    {
+      "id": "state-wave",
+      "group": "states",
+      "trigger": "wave",
+      "description": "Wave hello: fin flutter and a rising two-note chirp.",
+      "loop": false,
+      "duration_s": 0.95,
+      "rms_dbfs": -22.0,
+      "peak_dbfs": -7.2,
+      "files": {
+        "wav": "wav/state-wave.wav",
+        "ogg": "ogg/state-wave.ogg",
+        "mp3": "mp3/state-wave.mp3"
+      }
+    },
+    {
+      "id": "state-jump",
+      "group": "states",
+      "trigger": "jump",
+      "description": "Hop: a rising blip, a beat of air, a soft landing on the beam.",
+      "loop": false,
+      "duration_s": 0.7,
+      "rms_dbfs": -22.0,
+      "peak_dbfs": -10.1,
+      "files": {
+        "wav": "wav/state-jump.wav",
+        "ogg": "ogg/state-jump.ogg",
+        "mp3": "mp3/state-jump.mp3"
+      }
+    },
+    {
+      "id": "state-failed",
+      "group": "states",
+      "trigger": "failed",
+      "description": "Fault: coral descent with a hologram flicker. Serious, never shrill.",
+      "loop": false,
+      "duration_s": 1.7,
+      "rms_dbfs": -22.0,
+      "peak_dbfs": -7.6,
+      "files": {
+        "wav": "wav/state-failed.wav",
+        "ogg": "ogg/state-failed.ogg",
+        "mp3": "mp3/state-failed.mp3"
+      }
+    },
+    {
+      "id": "state-run",
+      "group": "states",
+      "trigger": "running-left / running-right",
+      "description": "Scoot: a short hard-light whoosh with a small pitch bend.",
+      "loop": false,
+      "duration_s": 0.7,
+      "rms_dbfs": -26.0,
+      "peak_dbfs": -11.9,
+      "files": {
+        "wav": "wav/state-run.wav",
+        "ogg": "ogg/state-run.ogg",
+        "mp3": "mp3/state-run.mp3"
+      }
+    },
+    {
+      "id": "evt-materialize",
+      "group": "events",
+      "trigger": "app start / FERRIN appears",
+      "description": "Full build: three pips, the column rising in three stages, the swarm gathering, the Longwake call as the optic opens.",
+      "loop": false,
+      "duration_s": 5.0,
+      "rms_dbfs": -18.1,
+      "peak_dbfs": -1.0,
+      "files": {
+        "wav": "wav/evt-materialize.wav",
+        "ogg": "ogg/evt-materialize.ogg",
+        "mp3": "mp3/evt-materialize.mp3"
+      }
+    },
+    {
+      "id": "evt-dematerialize",
+      "group": "events",
+      "trigger": "app quit / FERRIN hides",
+      "description": "Stand down: the lantern sweeps away and the swarm scatters to the puck.",
+      "loop": false,
+      "duration_s": 2.4,
+      "rms_dbfs": -20.0,
+      "peak_dbfs": -4.7,
+      "files": {
+        "wav": "wav/evt-dematerialize.wav",
+        "ogg": "ogg/evt-dematerialize.ogg",
+        "mp3": "mp3/evt-dematerialize.mp3"
+      }
+    },
+    {
+      "id": "evt-emitter-on",
+      "group": "events",
+      "trigger": "emitter connected",
+      "description": "Puck powers up: low thunk and three pip ticks. No hologram yet.",
+      "loop": false,
+      "duration_s": 1.3,
+      "rms_dbfs": -20.6,
+      "peak_dbfs": -5.3,
+      "files": {
+        "wav": "wav/evt-emitter-on.wav",
+        "ogg": "ogg/evt-emitter-on.ogg",
+        "mp3": "mp3/evt-emitter-on.mp3"
+      }
+    },
+    {
+      "id": "evt-task-complete",
+      "group": "events",
+      "trigger": "agent finished",
+      "description": "Task done: the full Longwake call, bright and short.",
+      "loop": false,
+      "duration_s": 1.3,
+      "rms_dbfs": -18.0,
+      "peak_dbfs": -4.4,
+      "files": {
+        "wav": "wav/evt-task-complete.wav",
+        "ogg": "ogg/evt-task-complete.ogg",
+        "mp3": "mp3/evt-task-complete.mp3"
+      }
+    },
+    {
+      "id": "evt-blocked",
+      "group": "events",
+      "trigger": "agent blocked / approval needed",
+      "description": "Needs you: two coral notes, repeated once. Firm, not an alarm.",
+      "loop": false,
+      "duration_s": 1.1,
+      "rms_dbfs": -20.0,
+      "peak_dbfs": -7.1,
+      "files": {
+        "wav": "wav/evt-blocked.wav",
+        "ogg": "ogg/evt-blocked.ogg",
+        "mp3": "mp3/evt-blocked.mp3"
+      }
+    },
+    {
+      "id": "evt-hail",
+      "group": "events",
+      "trigger": "notification",
+      "description": "Incoming hail: two quick mint pings.",
+      "loop": false,
+      "duration_s": 0.9,
+      "rms_dbfs": -21.0,
+      "peak_dbfs": -7.7,
+      "files": {
+        "wav": "wav/evt-hail.wav",
+        "ogg": "ogg/evt-hail.ogg",
+        "mp3": "mp3/evt-hail.mp3"
+      }
+    },
+    {
+      "id": "ui-click",
+      "group": "ui",
+      "trigger": "click",
+      "description": "Tactile tick for buttons.",
+      "loop": false,
+      "duration_s": 0.03,
+      "rms_dbfs": -26.0,
+      "peak_dbfs": -11.9,
+      "files": {
+        "wav": "wav/ui-click.wav",
+        "ogg": "ogg/ui-click.ogg",
+        "mp3": "mp3/ui-click.mp3"
+      }
+    },
+    {
+      "id": "ui-hover",
+      "group": "ui",
+      "trigger": "hover",
+      "description": "Barely-there brush for hover.",
+      "loop": false,
+      "duration_s": 0.05,
+      "rms_dbfs": -33.8,
+      "peak_dbfs": -17.9,
+      "files": {
+        "wav": "wav/ui-hover.wav",
+        "ogg": "ogg/ui-hover.ogg",
+        "mp3": "mp3/ui-hover.mp3"
+      }
+    },
+    {
+      "id": "ui-toggle-on",
+      "group": "ui",
+      "trigger": "toggle on",
+      "description": "Switch on: up a fourth.",
+      "loop": false,
+      "duration_s": 0.22,
+      "rms_dbfs": -25.0,
+      "peak_dbfs": -13.1,
+      "files": {
+        "wav": "wav/ui-toggle-on.wav",
+        "ogg": "ogg/ui-toggle-on.ogg",
+        "mp3": "mp3/ui-toggle-on.mp3"
+      }
+    },
+    {
+      "id": "ui-toggle-off",
+      "group": "ui",
+      "trigger": "toggle off",
+      "description": "Switch off: down a fourth.",
+      "loop": false,
+      "duration_s": 0.22,
+      "rms_dbfs": -26.0,
+      "peak_dbfs": -14.7,
+      "files": {
+        "wav": "wav/ui-toggle-off.wav",
+        "ogg": "ogg/ui-toggle-off.ogg",
+        "mp3": "mp3/ui-toggle-off.mp3"
+      }
+    },
+    {
+      "id": "ui-panel-open",
+      "group": "ui",
+      "trigger": "open panel",
+      "description": "Panel unfolds: short rising air and a light tick.",
+      "loop": false,
+      "duration_s": 0.38,
+      "rms_dbfs": -26.0,
+      "peak_dbfs": -13.5,
+      "files": {
+        "wav": "wav/ui-panel-open.wav",
+        "ogg": "ogg/ui-panel-open.ogg",
+        "mp3": "mp3/ui-panel-open.mp3"
+      }
+    },
+    {
+      "id": "ui-panel-close",
+      "group": "ui",
+      "trigger": "close panel",
+      "description": "Panel folds away: falling air.",
+      "loop": false,
+      "duration_s": 0.32,
+      "rms_dbfs": -27.0,
+      "peak_dbfs": -10.9,
+      "files": {
+        "wav": "wav/ui-panel-close.wav",
+        "ogg": "ogg/ui-panel-close.ogg",
+        "mp3": "mp3/ui-panel-close.mp3"
+      }
+    },
+    {
+      "id": "ui-error",
+      "group": "ui",
+      "trigger": "error",
+      "description": "Invalid input: a dull double buzz, low and brief.",
+      "loop": false,
+      "duration_s": 0.3,
+      "rms_dbfs": -25.0,
+      "peak_dbfs": -19.9,
+      "files": {
+        "wav": "wav/ui-error.wav",
+        "ogg": "ogg/ui-error.ogg",
+        "mp3": "mp3/ui-error.mp3"
+      }
+    },
+    {
+      "id": "cmd-sitrep",
+      "group": "commands",
+      "trigger": "$ferrin sitrep",
+      "description": "Status report: teletype chatter and a closing tone.",
+      "loop": false,
+      "duration_s": 1.0,
+      "rms_dbfs": -24.0,
+      "peak_dbfs": -11.1,
+      "files": {
+        "wav": "wav/cmd-sitrep.wav",
+        "ogg": "ogg/cmd-sitrep.ogg",
+        "mp3": "mp3/cmd-sitrep.mp3"
+      }
+    },
+    {
+      "id": "game-contact-ping",
+      "group": "commands",
+      "trigger": "contact game",
+      "description": "Contact: a sonar-style ping with a long metallic tail.",
+      "loop": false,
+      "duration_s": 2.2,
+      "rms_dbfs": -22.0,
+      "peak_dbfs": -6.7,
+      "files": {
+        "wav": "wav/game-contact-ping.wav",
+        "ogg": "ogg/game-contact-ping.ogg",
+        "mp3": "mp3/game-contact-ping.mp3"
+      }
+    },
+    {
+      "id": "game-score",
+      "group": "commands",
+      "trigger": "game score",
+      "description": "Point scored in drop or drill.",
+      "loop": false,
+      "duration_s": 0.4,
+      "rms_dbfs": -23.0,
+      "peak_dbfs": -12.4,
+      "files": {
+        "wav": "wav/game-score.wav",
+        "ogg": "ogg/game-score.ogg",
+        "mp3": "mp3/game-score.mp3"
+      }
+    },
+    {
+      "id": "game-miss",
+      "group": "commands",
+      "trigger": "game miss",
+      "description": "Missed: a flat downward blip, no scolding.",
+      "loop": false,
+      "duration_s": 0.25,
+      "rms_dbfs": -25.0,
+      "peak_dbfs": -13.3,
+      "files": {
+        "wav": "wav/game-miss.wav",
+        "ogg": "ogg/game-miss.ogg",
+        "mp3": "mp3/game-miss.mp3"
+      }
+    },
+    {
+      "id": "egg-perimeter-sweep",
+      "group": "eggs",
+      "trigger": "Perimeter Sweep code",
+      "description": "Key code accepted: four compass blips (up, right, down, left) then an open chord.",
+      "loop": false,
+      "duration_s": 1.8,
+      "rms_dbfs": -19.0,
+      "peak_dbfs": -2.9,
+      "files": {
+        "wav": "wav/egg-perimeter-sweep.wav",
+        "ogg": "ogg/egg-perimeter-sweep.ogg",
+        "mp3": "mp3/egg-perimeter-sweep.mp3"
+      }
+    },
+    {
+      "id": "egg-longwake",
+      "group": "eggs",
+      "trigger": "LONGWAKE typed code",
+      "description": "LONGWAKE: a distant ship horn under the call, slowed down, in a cold empty hold.",
+      "loop": false,
+      "duration_s": 4.5,
+      "rms_dbfs": -19.9,
+      "peak_dbfs": -7.7,
+      "files": {
+        "wav": "wav/egg-longwake.wav",
+        "ogg": "ogg/egg-longwake.ogg",
+        "mp3": "mp3/egg-longwake.mp3"
+      }
+    },
+    {
+      "id": "egg-commendation",
+      "group": "eggs",
+      "trigger": "commendation unlocked",
+      "description": "Commendation earned: a bright pentatonic arpeggio with a shimmer.",
+      "loop": false,
+      "duration_s": 1.8,
+      "rms_dbfs": -19.0,
+      "peak_dbfs": -4.0,
+      "files": {
+        "wav": "wav/egg-commendation.wav",
+        "ogg": "ogg/egg-commendation.ogg",
+        "mp3": "mp3/egg-commendation.mp3"
+      }
+    },
+    {
+      "id": "egg-log-unlocked",
+      "group": "eggs",
+      "trigger": "LW log unlocked",
+      "description": "Lore log found: tape spin-up, teletype, and the first two notes of the call.",
+      "loop": false,
+      "duration_s": 1.5,
+      "rms_dbfs": -21.0,
+      "peak_dbfs": -6.2,
+      "files": {
+        "wav": "wav/egg-log-unlocked.wav",
+        "ogg": "ogg/egg-log-unlocked.ogg",
+        "mp3": "mp3/egg-log-unlocked.mp3"
+      }
+    },
+    {
+      "id": "egg-ballast-tag",
+      "group": "eggs",
+      "trigger": "Ballast Tag earned",
+      "description": "Ballast Tag stamped: a cargo stamp thunk with a ring.",
+      "loop": false,
+      "duration_s": 1.1,
+      "rms_dbfs": -20.0,
+      "peak_dbfs": -1.1,
+      "files": {
+        "wav": "wav/egg-ballast-tag.wav",
+        "ogg": "ogg/egg-ballast-tag.ogg",
+        "mp3": "mp3/egg-ballast-tag.mp3"
+      }
+    }
+  ]
+}
