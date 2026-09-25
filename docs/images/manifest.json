@@ -1,0 +1,291 @@
+{
+  "pack": "FERRIN-VIS-001",
+  "version": "1.0",
+  "images": [
+    {
+      "file": "docs/images/ferrin-hero-banner.webp",
+      "prompt_id": "FERRIN-VIS-001/F01",
+      "alt": "FERRIN, an amber hexagonal hologram with one mint eye and chevron fins, hovering above its gunmetal emitter puck in a dark bay",
+      "page": "readme",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_24_29_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1600,
+        841
+      ],
+      "bytes": 64636,
+      "sha256": "b7e9bc58ee77b9b0ad73c036f629c5f47e9daf804819b81f9e1e6091f4f4fd66",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/ferrin-cargo-bay-clipboard.webp",
+      "prompt_id": "FERRIN-VIS-001/A01",
+      "alt": "FERRIN in a cargo bay holding a blank clipboard between its fins, olive crates around it and an amber star outside the viewport",
+      "page": "character",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_24_38_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 167446,
+      "sha256": "32090c10ffa0a9c0b305b1ccf891ee08758e0523505bff123a2b082cd2a55cc3",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/ferrin-cargo-bay-inspect.webp",
+      "prompt_id": "FERRIN-VIS-001/A01",
+      "alt": "FERRIN turned three-quarters, inspecting a clipboard beside stacked olive cargo crates",
+      "page": "character",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_24_32_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 176478,
+      "sha256": "37c987d5ff50d6b1ba70791d950a7a238d874e17e88f281d2341a8ee5eaf7eaa",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/ferrin-sticker-sheet.webp",
+      "prompt_id": "FERRIN-VIS-001/D04",
+      "alt": "Sticker sheet of FERRIN in six poses plus its emitter puck and an olive cargo crate",
+      "page": "character",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_24_36_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1122,
+        1402
+      ],
+      "bytes": 126538,
+      "sha256": "787ec99c549d2e7f8b026b209c831c9983778da82f670497185d69895afbcc57",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/ferrin-eye-states.webp",
+      "prompt_id": "FERRIN-VIS-001/A03",
+      "alt": "Nine close-ups of FERRIN's visor showing eye states: calm, blink, happy, sad, narrowed, wide, look left, look right, dimmed",
+      "page": "character",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_24_02_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 109606,
+      "sha256": "296fb1f229ed356425c989cb119b101c89400047183b0c5fdbe0b49e80270e2e",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/event-manifest-mixup.webp",
+      "prompt_id": "FERRIN-VIS-001/E02",
+      "alt": "FERRIN startled above a cargo crate overflowing with rolled socks",
+      "page": "events",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_24_24_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 223644,
+      "sha256": "3e7b70b93399665468197d1f2b268ff3c10e47eeb37c42f27a1a865bb59d7842",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/event-longwake-launch-day.webp",
+      "prompt_id": "FERRIN-VIS-001/E01",
+      "alt": "FERRIN on a shelf beside a framed picture of a frigate launching and a small amber lamp",
+      "page": "events",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_24_20_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1254,
+        1254
+      ],
+      "bytes": 157574,
+      "sha256": "c7ed1cbce21ad89038d31c68950e169344bf19272c66d2dbb51e5b0f07a02c8d",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/event-derelict-night.webp",
+      "prompt_id": "FERRIN-VIS-001/E03",
+      "alt": "FERRIN peeking around a bulkhead in a dim relay corridor lit by amber strip lights",
+      "page": "events",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_24_27_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1122,
+        1402
+      ],
+      "bytes": 169820,
+      "sha256": "43204650e04b4d1609682e85e1237670a3876dbb52cde6241960948e7cfb1de5",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/ballast-tags.webp",
+      "prompt_id": "FERRIN-VIS-001/D03",
+      "alt": "Six stamped cargo tags on chains: gauge, cut ration bar, loudspeaker, mirrored arrows, crescent moon, four-leaf clover",
+      "page": "commands",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_24_09_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 272004,
+      "sha256": "eb7ca93b787d0cf800aa94633420b83f805de7de5232d78ad3fef281f3fc2b3f",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/commendation-badges.webp",
+      "prompt_id": "FERRIN-VIS-001/D02",
+      "alt": "Seven round olive-and-brass commendation badges: crate, compass rose, open ledger, moon and lantern, stacked tags, arc of seven dots, crate held by chevrons",
+      "page": "commands",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_24_04_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1600,
+        309
+      ],
+      "bytes": 69746,
+      "sha256": "09951168d6f20f5a9a44dd427a9dc5cf03cb7d97f381388fb144bc77e565e535",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/ferrin-desktop-context.webp",
+      "prompt_id": "FERRIN-VIS-001/C03",
+      "alt": "A night-time developer desk with FERRIN shown as a desktop companion in the corner of a monitor",
+      "page": "readme",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_23_57_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1600,
+        900
+      ],
+      "bytes": 86920,
+      "sha256": "f8b965b6616ba043493bbb8fff228244f4c18f9b125d9d6ca0f018c2e5e35b79",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/preview-console-mockup.webp",
+      "prompt_id": "FERRIN-VIS-001/C01",
+      "alt": "Mockup of the FERRIN preview console: character panel with speech bubble, three mood gauges, and a command input",
+      "page": "commands",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_23_52_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1586,
+        992
+      ],
+      "bytes": 77912,
+      "sha256": "ececf086ead3f83f956990a5067ee7d1d65780344eea164bb75bb825076be07b",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/lore-tenders-muster.webp",
+      "prompt_id": "FERRIN-VIS-001/B05",
+      "alt": "FERRIN beside four olive utility tenders and one empty charging cradle on a hangar deck",
+      "page": "lore",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_23_48_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1600,
+        900
+      ],
+      "bytes": 224888,
+      "sha256": "61e9a67898e6e652f09da70ce22959ef70f4bf0b97de0acd2dd159589f6fb245",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/lore-the-salvage.webp",
+      "prompt_id": "FERRIN-VIS-001/B03",
+      "alt": "Gloved hands lifting FERRIN from a dusty locker aboard a derelict station",
+      "page": "lore",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_23_44_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1536,
+        1024
+      ],
+      "bytes": 200158,
+      "sha256": "aedd39ff1a72571f526a4d89416c0055234ff18ef930245efffbeeed97198e6a",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/lore-the-murmur.webp",
+      "prompt_id": "FERRIN-VIS-001/B04",
+      "alt": "FERRIN small in the foreground, lantern narrowed, as amber interference ripples bend the starfield outside a relay viewport",
+      "page": "lore",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_23_41_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1600,
+        900
+      ],
+      "bytes": 193458,
+      "sha256": "2cb73f1f3aecab168e07fca454d0df4bbe4dacee9e34ed940a03c6f47e0469fb",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/lore-relay-kestrel-nine.webp",
+      "prompt_id": "FERRIN-VIS-001/B02",
+      "alt": "Relay Kestrel-Nine, a derelict truss station with two dishes and a mint beacon, drifting among debris",
+      "page": "lore",
+      "source_file": "ChatGPT_Image_Sep_25__2026__02_23_39_PM.png",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1600,
+        900
+      ],
+      "bytes": 197676,
+      "sha256": "92286a337676210ebdad0649b57ae2dea84e16e074550c2b8ed2ac2f50b81aaf",
+      "hue_guard_blue_violet_pct": 0.0,
+      "ai_generated": true
+    },
+    {
+      "file": "docs/images/social-preview.png",
+      "prompt_id": "FERRIN-VIS-001/F01",
+      "alt": "FERRIN social preview card",
+      "page": "repo-settings",
+      "engine": "ChatGPT image generation",
+      "generated": "2026-09-25",
+      "size": [
+        1280,
+        640
+      ],
+      "ai_generated": true
+    }
+  ]
+}
