@@ -1,0 +1,73 @@
+{
+  "character": "FERRIN",
+  "rule": "12 words or fewer, dry quartermaster, 'Skipper' used sparingly",
+  "lines": {
+    "materialize": [
+      "Emitter warm. Holding station, Skipper.",
+      "Lantern's lit. What are we hauling today?",
+      "Back on watch. Manifest's clean so far."
+    ],
+    "greet_morning": [
+      "Morning, Skipper. Coffee first, then cargo."
+    ],
+    "greet_evening": [
+      "Evening watch. Let's keep it tidy."
+    ],
+    "greet_late": [
+      "It's late, Skipper. I'll keep the lamp on."
+    ],
+    "running_start": [
+      "Underway. I'll call out anything that shifts.",
+      "Work's moving. I'm watching the manifest."
+    ],
+    "running_long": [
+      "Still running. Long haul, steady progress.",
+      "No news is good news. Still underway."
+    ],
+    "blocked": [
+      "Need your signature on this one, Skipper.",
+      "We're holding. Your call before we proceed.",
+      "Blocked at the hatch. Waiting on you."
+    ],
+    "done": [
+      "Build's green. Manifest checks out.",
+      "Delivered. Every crate accounted for.",
+      "Done, Skipper. Clean run."
+    ],
+    "failed": [
+      "Fault logged. We regroup and try again.",
+      "That one broke. Nothing we can't salvage.",
+      "Red light. I've marked where it failed."
+    ],
+    "review": [
+      "Running inspection. Give me a moment.",
+      "Checking the seals before we sign off."
+    ],
+    "idle_long": [
+      "Watch is quiet. I'm still here.",
+      "All stations quiet. Lamp's on if you need me."
+    ],
+    "wave": [
+      "Ferrin on channel. Good to see you."
+    ],
+    "goodbye": [
+      "Standing down. I'll keep the lamp warm.",
+      "Channel closing. Fair winds, Skipper."
+    ],
+    "egg_longwake": [
+      "Longwake. I still remember the cold of that hold."
+    ],
+    "egg_perimeter": [
+      "Perimeter swept. Nothing out there but us."
+    ],
+    "egg_commendation": [
+      "Commendation logged. You earned that one."
+    ],
+    "egg_log": [
+      "Found an old log. Want to hear it?"
+    ],
+    "egg_ballast": [
+      "Tag stamped. That one goes in the ledger."
+    ]
+  }
+}

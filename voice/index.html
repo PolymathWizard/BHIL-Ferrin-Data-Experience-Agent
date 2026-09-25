@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FERRIN comms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600&family=Saira+Stencil+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#0B0704; --amber:#FFB23F; --deep:#C7771E; --core:#FFF3D6; --mint:#34F5B4; --coral:#FF5A4E; --olive:#5B6B3A;
+  --ink:#FFF3D6; --muted:rgba(255,243,214,.66); --faint:rgba(255,243,214,.36); --hair:rgba(255,178,63,.36); --glass:rgba(22,13,6,.8);
+  --ui:"Barlow Semi Condensed","Roboto Condensed","Arial Narrow",system-ui,sans-serif;
+  --mark:"Saira Stencil One","Barlow Semi Condensed",Impact,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --void:#0B0704; --glass:rgba(22,13,6,.8); } }
+:root[data-theme="dark"]{ --void:#0B0704; --glass:rgba(22,13,6,.8); }
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){ --glass:rgba(34,20,9,.84); } }
+*,*::before,*::after{box-sizing:border-box}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--void);color:var(--ink);font-family:var(--ui);-webkit-font-smoothing:antialiased}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+.ui{position:fixed;z-index:5}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+#ident{top:calc(env(safe-area-inset-top,0px) + 22px);left:28px;pointer-events:none}
+#ident h1{margin:0;font-family:var(--mark);font-weight:400;font-size:clamp(34px,4.4vw,54px);letter-spacing:.06em;line-height:.9;color:var(--amber);text-shadow:0 0 24px rgba(255,178,63,.35)}
+#ident p{margin:8px 0 0;font-size:15px;color:var(--muted)}
+#link{display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-size:13.5px;color:var(--faint);pointer-events:auto}
+#link i{width:8px;height:8px;border-radius:50%;background:var(--faint);display:inline-block}
+#link.online i{background:var(--mint);box-shadow:0 0 8px var(--mint)}
+#link.offline i{background:var(--amber)}
+/* spoken caption */
+#say{left:0;right:440px;bottom:calc(env(safe-area-inset-bottom,0px) + 34px);text-align:center;pointer-events:none;padding:0 20px}
+#say p{display:inline-block;margin:0;max-width:min(640px,100%);font-size:clamp(19px,2.1vw,25px);font-weight:500;line-height:1.3;text-shadow:0 1px 14px rgba(0,0,0,.95);color:var(--faint);min-height:1.3em}
+#say p span.on{color:var(--core)}
+#say p span.now{color:var(--amber)}
+/* panel */
+#panel{right:24px;top:calc(env(safe-area-inset-top,0px) + 22px);bottom:calc(env(safe-area-inset-bottom,0px) + 22px);width:min(400px,calc(100vw - 48px));background:var(--glass);border:1px solid var(--hair);backdrop-filter:blur(10px);display:flex;flex-direction:column}
+#panel::before,#panel::after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--amber);pointer-events:none}
+#panel::before{top:-2px;left:-2px;border-right:0;border-bottom:0}
+#panel::after{bottom:-2px;right:-2px;border-left:0;border-top:0}
+.phead{padding:16px 18px 12px;border-bottom:1px solid rgba(255,178,63,.18)}
+.phead h2{margin:0;font-size:22px;font-weight:600}
+.phead p{margin:4px 0 0;font-size:14.5px;color:var(--muted);line-height:1.4}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px;font-size:14px;color:var(--muted)}
+select{background:#1d1209;border:1px solid var(--hair);padding:5px 6px;border-radius:2px;max-width:220px}
+.tog{background:none;border:1px solid var(--hair);padding:5px 10px;border-radius:2px;cursor:pointer;font-size:14px}
+.tog[aria-pressed="true"]{border-color:var(--amber);color:var(--amber)}
+#log{flex:1;overflow:auto;padding:12px 18px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--deep) transparent}
+.msg{max-width:88%;font-size:15.5px;line-height:1.42}
+.msg b{display:block;font-size:12px;font-weight:600;margin-bottom:2px}
+.msg.f{align-self:flex-start;color:var(--core)} .msg.f b{color:var(--amber)}
+.msg.u{align-self:flex-end;text-align:right;color:var(--muted)} .msg.u b{color:var(--faint)}
+.msg.sys{align-self:center;text-align:center;font-size:13px;color:var(--faint);max-width:100%}
+.msg.pending{opacity:.6}
+.sim{padding:10px 18px;border-top:1px solid rgba(255,178,63,.18)}
+.sim h3{margin:0 0 6px;font-size:14px;font-weight:500;color:var(--muted)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{background:none;border:1px solid var(--hair);padding:5px 10px;border-radius:2px;cursor:pointer;font-size:14px}
+.chip:hover{border-color:var(--amber);color:var(--amber)}
+.chip[aria-pressed="true"]{background:rgba(255,178,63,.14);border-color:var(--amber);color:var(--amber)}
+.chip.bad[aria-pressed="true"]{border-color:var(--coral);color:var(--coral);background:rgba(255,90,78,.12)}
+.chip.ok[aria-pressed="true"]{border-color:var(--mint);color:var(--mint);background:rgba(52,245,180,.1)}
+.input{display:flex;gap:8px;padding:12px 18px 16px;border-top:1px solid rgba(255,178,63,.18);align-items:center}
+#mic{flex:none;width:46px;height:46px;border-radius:50%;border:1.5px solid var(--mint);background:none;color:var(--mint);cursor:pointer;display:grid;place-items:center;touch-action:none}
+#mic svg{width:18px;height:18px}
+#mic[aria-pressed="true"]{background:var(--mint);color:#062016;box-shadow:0 0 18px rgba(52,245,180,.55)}
+#mic:disabled{opacity:.3;cursor:not-allowed}
+#text{flex:1;min-width:0;background:#1d1209;border:1px solid var(--hair);padding:10px 12px;border-radius:2px;font-size:15.5px}
+#text::placeholder{color:var(--faint)}
+#send{background:var(--amber);color:#2a1706;border:0;padding:10px 14px;font-weight:600;border-radius:2px;cursor:pointer}
+#send:disabled{opacity:.5}
+details{padding:0 18px 10px}
+details summary{cursor:pointer;font-size:14px;color:var(--muted);padding:8px 0}
+.lines{max-height:170px;overflow:auto;font-size:14px}
+.mem{font-size:14px;color:var(--muted)} .mem ul{list-style:none;margin:6px 0;padding:0;max-height:150px;overflow:auto}
+.mem li{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,178,63,.12);color:var(--core)}
+.mem li small{color:var(--faint);white-space:nowrap} .mem li button{background:none;border:0;color:var(--faint);cursor:pointer;padding:0 4px}
+.mem li button:hover{color:var(--coral)} .mem .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.mem label{display:flex;gap:6px;align-items:center}
+.lines div{margin:6px 0 2px;color:var(--amber);font-size:12.5px}
+.lines button{display:block;width:100%;text-align:left;background:none;border:0;padding:3px 0;color:var(--muted);cursor:pointer}
+.lines button:hover{color:var(--core)}
+#gate{position:fixed;inset:0;z-index:9;display:grid;place-items:center;background:rgba(11,7,4,.55);backdrop-filter:blur(2px)}
+#gate div{text-align:center;max-width:420px;padding:24px}
+#gate h2{font-size:26px;margin:0 0 8px;font-weight:600}
+#gate p{color:var(--muted);font-size:15.5px;line-height:1.45;margin:0 0 18px}
+#gate button{background:var(--amber);color:#2a1706;border:0;padding:13px 22px;font-weight:600;font-size:17px;border-radius:2px;cursor:pointer}
+#gate.gone{display:none}
+#loading{position:fixed;inset:0;display:grid;place-items:center;z-index:10;background:var(--void);color:var(--muted);transition:opacity .8s}
+#loading.gone{opacity:0;pointer-events:none}
+#fallback{display:none;position:fixed;inset:0;place-items:center;text-align:center;padding:24px;z-index:11;background:var(--void)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:760px){
+  #ident{left:16px} #ident p{display:none}
+  #panel{left:8px;right:8px;width:auto;top:auto;height:52%;bottom:calc(env(safe-area-inset-bottom,0px) + 8px)}
+  #say{bottom:auto;right:0;top:calc(env(safe-area-inset-top,0px) + 76px)}
+  .lines{max-height:120px}
+}
+</style>
+</head>
+<body>
+<canvas id="gl" aria-label="FERRIN, an amber lantern-shaped hologram, hovering above its emitter puck"></canvas>
+<div id="loading" class="ui">Warming the emitter…</div>
+<div id="fallback" class="ui"><div><p style="font-size:20px;color:var(--amber)">This view needs WebGL.</p><p style="color:var(--muted)">Turn on hardware acceleration in your browser settings, then reload.</p></div></div>
+
+<header id="ident" class="ui">
+  <h1>FERRIN</h1>
+  <p>Comms channel, voice prototype</p>
+  <div id="link" role="status"><i></i><span>Checking relay…</span></div>
+</header>
+<div id="say" class="ui" aria-hidden="true"><p id="sayP"></p></div>
+
+<aside id="panel" class="ui" aria-label="Talk to FERRIN">
+  <div class="phead">
+    <h2>Talk to FERRIN</h2>
+    <p>Hold the mic button, or hold Space, and speak. You can also type. FERRIN answers out loud.</p>
+    <div class="controls">
+      <label for="voice">Voice</label><select id="voice"></select>
+      <button class="tog" id="mute" aria-pressed="false">Mute voice</button>
+    </div>
+  </div>
+  <div id="log" aria-live="polite"></div>
+  <details class="mem" id="memd">
+    <summary>Ship's log <span id="memCount"></span></summary>
+    <label><input type="checkbox" id="memOn" checked> Remember what I tell FERRIN</label>
+    <ul id="memList"></ul>
+    <div class="row">
+      <button type="button" class="tog" id="memExport">Export</button>
+      <label class="tog" style="cursor:pointer">Import<input type="file" id="memImport" accept="application/json" hidden></label>
+      <button type="button" class="tog" id="memWipe">Wipe</button>
+    </div>
+    <p style="margin:6px 0 0;font-size:12.5px;color:var(--faint)">Stored in this browser only. Say "remember that…", "forget…" or "what do you remember?".</p>
+  </details>
+  <details>
+    <summary>Scripted lines</summary>
+    <div class="lines" id="lines"></div>
+  </details>
+  <div class="sim">
+    <h3>Simulate your agent</h3>
+    <div class="chips" role="group" aria-label="Agent status">
+      <button class="chip" data-st="running" aria-pressed="false">Running</button>
+      <button class="chip bad" data-st="blocked" aria-pressed="false">Blocked</button>
+      <button class="chip" data-st="review" aria-pressed="false">Review</button>
+      <button class="chip ok" data-st="done" aria-pressed="false">Done</button>
+      <button class="chip bad" data-st="failed" aria-pressed="false">Failed</button>
+      <button class="chip" data-st="idle" aria-pressed="true">Idle</button>
+    </div>
+  </div>
+  <form class="input" id="form" autocomplete="off">
+    <button type="button" id="mic" aria-pressed="false" aria-label="Hold to talk"><svg viewBox="0 0 18 18" aria-hidden="true"><rect x="6" y="1.5" width="6" height="10" rx="3" fill="currentColor"/><path d="M3.5 8.5a5.5 5.5 0 0 0 11 0M9 14v2.5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></button>
+    <input id="text" type="text" placeholder="Say something to FERRIN" aria-label="Message to FERRIN" maxlength="400">
+    <button id="send" type="submit">Send</button>
+  </form>
+</aside>
+
+<div id="gate">
+  <div>
+    <h2>Open the comms channel</h2>
+    <p>FERRIN speaks through your browser's built-in voice. Your browser only lets a page talk after you click, so this button switches the sound on.</p>
+    <button id="open">Open channel</button>
+  </div>
+</div>
+<p class="sr" id="srSay" aria-live="assertive"></p>
+<script src="../shared/ferrin-memory.js"></script>
+<script src="brain.js" onerror="void 0"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script>
+(function(){
+'use strict';
+const $ = s => document.querySelector(s);
+const canvas = $('#gl');
+function fail(){ $('#fallback').style.display='grid'; $('#loading').classList.add('gone'); }
+if(!window.THREE){ fail(); return; }
+const V3 = THREE.Vector3, V2 = THREE.Vector2;
+const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
+const RM = () => reduceMQ.matches;
+const isMobile = () => innerWidth <= 760;
+
+const C = { void:0x0B0704, umber:0x3A2410, paper:0x2B190B, amber:0xFFB23F, deep:0xC7771E, core:0xFFF3D6,
+  mint:0x34F5B4, mintS:0x1FA57A, gun:0x2A3036, rim:0x4A545E, olive:0x5B6B3A, coral:0xFF5A4E, dim:0xB98A45 };
+
+/* ------------------------------------------------------------------ renderer */
+let renderer;
+try { renderer = new THREE.WebGLRenderer({canvas, antialias:true, powerPreference:'high-performance'}); }
+catch(e){ fail(); return; }
+if(!renderer.getContext()){ fail(); return; }
+renderer.setPixelRatio(Math.min(devicePixelRatio||1, 2));
+const scene = new THREE.Scene();
+const BG = new THREE.Color(C.void), PAPER = new THREE.Color(C.paper);
+scene.background = BG.clone();
+const FOG = new THREE.FogExp2(C.void, 0.0105);
+scene.fog = FOG;
+const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 900);
+
+let composer = null, bloom = null;
+try {
+  if(THREE.EffectComposer && THREE.RenderPass && THREE.UnrealBloomPass){
+    composer = new THREE.EffectComposer(renderer);
+    composer.addPass(new THREE.RenderPass(scene, camera));
+    bloom = new THREE.UnrealBloomPass(new V2(256,256), 0.7, 0.42, 0.8);
+    composer.addPass(bloom);
+  }
+} catch(e){ composer = null; }
+
+/* ------------------------------------------------------------------ lights */
+scene.add(new THREE.HemisphereLight(0xffe2b8, 0x140c06, 0.3));
+const key = new THREE.DirectionalLight(0xffd9a0, 0.78); key.position.set(12,22,16); scene.add(key);
+const rimL = new THREE.DirectionalLight(0xff9a3c, 0.8); rimL.position.set(-16,12,-14); scene.add(rimL);
+const fillL = new THREE.DirectionalLight(0x8fe8cf, 0.22); fillL.position.set(-12,6,14); scene.add(fillL);
+const beamLight = new THREE.PointLight(0xffb23f, 0, 34, 2); beamLight.position.set(0,3.6,0); scene.add(beamLight);
+const eyeLight = new THREE.PointLight(0x34f5b4, 0, 9, 2); eyeLight.position.set(0,12.9,6.2); scene.add(eyeLight);
+
+/* ------------------------------------------------------------------ hologram shader injection */
+const HU = { uReveal:{value:-100}, uTime:{value:0}, uGlow:{value:0}, uScanY:{value:-100}, uFault:{value:0}, uScanAmp:{value:0.5} };
+const holoMats = [];
+function holo(mat, opts){
+  opts = opts||{};
+  mat.userData.hi = {value:0};
+  mat.userData.bands = {value: opts.bands?1:0};
+  mat.onBeforeCompile = function(sh){
+    sh.uniforms.uReveal=HU.uReveal; sh.uniforms.uTime=HU.uTime; sh.uniforms.uGlow=HU.uGlow; sh.uniforms.uScanY=HU.uScanY;
+    sh.uniforms.uFault=HU.uFault; sh.uniforms.uScanAmp=HU.uScanAmp; sh.uniforms.uHi=mat.userData.hi; sh.uniforms.uBands=mat.userData.bands;
+    sh.vertexShader = 'varying vec3 vWPos;\nvarying vec3 vOPos;\n' + sh.vertexShader
+      .replace('#include <begin_vertex>','#include <begin_vertex>\n vOPos = position;')
+      .replace('#include <project_vertex>','#include <project_vertex>\n vWPos = (modelMatrix*vec4(transformed,1.0)).xyz;');
+    let f = 'uniform float uReveal,uTime,uGlow,uScanY,uFault,uScanAmp,uHi,uBands;\nvarying vec3 vWPos;\nvarying vec3 vOPos;\n' + sh.fragmentShader;
+    f = f.replace('#include <clipping_planes_fragment>','#include <clipping_planes_fragment>\n if(vWPos.y>uReveal) discard;');
+    f = f.replace('#include <color_fragment>', `#include <color_fragment>
+      if(uBands>0.5){ float yb=vOPos.y;
+        float b = step(8.6,yb)*step(yb,9.15) + step(9.9,yb)*step(yb,10.45) + step(11.2,yb)*step(yb,11.75);
+        diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.78,0.467,0.118), clamp(b,0.,1.));
+        float flick = 0.55+0.45*step(0.5,fract(uTime*9.0));
+        diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.62,0.45,0.22), uFault*flick);
+      }`);
+    if(f.indexOf('#include <emissivemap_fragment>')>=0){
+      f = f.replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
+        float edgeD = uReveal - vWPos.y;
+        float edge = (1.0-smoothstep(0.0,0.9,edgeD));
+        totalEmissiveRadiance += vec3(1.0,0.86,0.62)*edge*2.4*uGlow;
+        float sc = exp(-pow((vWPos.y-uScanY)*4.5,2.0));
+        totalEmissiveRadiance += vec3(1.0,0.78,0.45)*sc*uScanAmp*0.7;
+        totalEmissiveRadiance += vec3(1.0,0.72,0.32)*uHi*0.42;`);
+    } else {
+      f = f.replace('#include <color_fragment>', `#include <color_fragment>
+        float edgeB = 1.0-smoothstep(0.0,0.9,uReveal-vWPos.y);
+        diffuseColor.rgb += vec3(0.6,0.5,0.35)*edgeB*uGlow + vec3(0.3,0.25,0.15)*uHi;`);
+    }
+    sh.fragmentShader = f;
+  };
+  holoMats.push(mat);
+  return mat;
+}
+const strip = o => { const r=Object.assign({},o||{}); delete r.bands; return r; };
+const stdHolo = (color, o) => holo(new THREE.MeshStandardMaterial(Object.assign({color, roughness:.62, metalness:.14, flatShading:true,
+  emissive:new THREE.Color(color), emissiveIntensity:.07}, strip(o))), o);
+const basicHolo = (color, o) => holo(new THREE.MeshBasicMaterial(Object.assign({color}, strip(o))), o);
+
+/* ------------------------------------------------------------------ model */
+const root = new THREE.Group(); scene.add(root);
+const holoG = new THREE.Group(); root.add(holoG);
+const parts = []; // {no,name,obj,explode,physical,desc}
+function part(no, name, obj, explode, physical, desc){ const p={no,name,obj,explode,physical,desc,base:obj.position.clone()}; parts.push(p); return p; }
+
+// Body profile (radius, height) in units of 10 mm
+const PROF = [[0,5.2],[2.6,5.25],[4.2,6.3],[5.0,8.2],[5.1,10.2],[4.9,12.3],[4.1,14.2],[2.4,15.1],[0,15.2]];
+function rAt(y){ for(let i=0;i<PROF.length-1;i++){ const a=PROF[i],b=PROF[i+1]; if(y>=a[1]&&y<=b[1]) return a[0]+(b[0]-a[0])*(y-a[1])/Math.max(b[1]-a[1],1e-4);} return 0; }
+const FACET = Math.cos(Math.PI/8);
+
+// --- lantern shell
+const bodyG = new THREE.Group(); holoG.add(bodyG);
+const bodyMat = stdHolo(C.amber, {bands:true});
+const body = new THREE.Mesh(new THREE.LatheGeometry(PROF.map(p=>new V2(p[0],p[1])), 8, Math.PI/8), bodyMat);
+bodyG.add(body);
+const underDisc = new THREE.Mesh(new THREE.CircleGeometry(2.55,40), basicHolo(0xFFE3B0,{side:THREE.DoubleSide}));
+underDisc.rotation.x = Math.PI/2; underDisc.position.y = 5.18; bodyG.add(underDisc);
+part(3,'Lantern shell',bodyG,new V3(0,0,0),false,'8-facet shell with 3 scan bands');
+
+// --- visor
+const visorG = new THREE.Group(); visorG.position.y = 12.9; holoG.add(visorG);
+const vFrame = new THREE.Mesh(new THREE.CylinderGeometry(4.47,5.08,1.55,1,1,true,-Math.PI/8,Math.PI/4), stdHolo(0x6b4a22,{side:THREE.DoubleSide, metalness:.5, roughness:.4, emissiveIntensity:.05}));
+const vGlass = new THREE.Mesh(new THREE.CylinderGeometry(4.57,5.05,1.2,1,1,true,-Math.PI/8,Math.PI/4), stdHolo(0x140b05,{side:THREE.DoubleSide, metalness:.6, roughness:.22, emissiveIntensity:0}));
+visorG.add(vFrame, vGlass);
+part(4,'Visor',visorG,new V3(0,0,3.2),false,'3-facet shell, smoked');
+
+// --- optic (eye)
+const eyeG = new THREE.Group(); eyeG.position.set(0,12.9,4.52); eyeG.rotation.x = -0.354; holoG.add(eyeG);
+const eyeInner = new THREE.Group(); eyeG.add(eyeInner);
+const eyeMat = basicHolo(C.mint);
+const pill = new THREE.Group();
+const pc = new THREE.Mesh(new THREE.CylinderGeometry(.37,.37,1.1,20), eyeMat); pc.rotation.z = Math.PI/2; pill.add(pc);
+[-.55,.55].forEach(x=>{ const s=new THREE.Mesh(new THREE.SphereGeometry(.37,20,14), eyeMat); s.position.x=x; pill.add(s); });
+pill.scale.z = .45; eyeInner.add(pill);
+const eyeCore = new THREE.Mesh(new THREE.SphereGeometry(.27,20,14), basicHolo(C.core)); eyeCore.position.set(.36,0,.1); eyeCore.scale.z=.5; eyeInner.add(eyeCore);
+part(5,'Optic',eyeG,new V3(0,0,5.6),false,'Single pill aperture, 19 × 7.4');
+
+// --- range mast
+const mastG = new THREE.Group(); holoG.add(mastG);
+const collar = new THREE.Mesh(new THREE.CylinderGeometry(2.3,2.55,.36,8,1,false,Math.PI/8), stdHolo(0x4a3a2a,{metalness:.55,roughness:.4,emissiveIntensity:.03})); collar.position.y=15.18; mastG.add(collar);
+const stem = new THREE.Mesh(new THREE.CylinderGeometry(.24,.28,1.5,16), stdHolo(0x8a6a3a,{metalness:.6,roughness:.35,flatShading:false,emissiveIntensity:.04})); stem.position.y=16.1; mastG.add(stem);
+const tipMat = basicHolo(C.mint);
+const tip = new THREE.Mesh(new THREE.CylinderGeometry(.31,.31,.62,18), tipMat); tip.position.y=17.1; mastG.add(tip);
+const tipCap = new THREE.Mesh(new THREE.SphereGeometry(.31,18,10,0,Math.PI*2,0,Math.PI/2), tipMat); tipCap.position.y=17.41; tipCap.scale.y=.55; mastG.add(tipCap);
+part(6,'Range mast',mastG,new V3(0,3.4,0),false,'Beacon, stem and collar');
+
+// --- fins
+function finShape(){ const s=new THREE.Shape(); s.moveTo(0,-1.05); s.lineTo(2.1,-1.85); s.lineTo(2.55,-1.2); s.lineTo(2.55,1.2); s.lineTo(2.1,1.85); s.lineTo(0,1.05); s.closePath(); return s; }
+function chevShape(){ const s=new THREE.Shape(); s.moveTo(.55,.95); s.lineTo(1.05,.95); s.lineTo(1.75,0); s.lineTo(1.05,-.95); s.lineTo(.55,-.95); s.lineTo(1.25,0); s.closePath(); return s; }
+const finGeo = new THREE.ExtrudeGeometry(finShape(),{depth:.3,bevelEnabled:true,bevelThickness:.05,bevelSize:.05,bevelSegments:1}); finGeo.translate(0,0,-.15);
+const chevGeo = new THREE.ExtrudeGeometry(chevShape(),{depth:.05,bevelEnabled:false}); 
+const finMat = stdHolo(C.amber), oliveMat = stdHolo(C.olive,{emissiveIntensity:.05}), hubMat = stdHolo(0x3b3128,{metalness:.6,roughness:.35,flatShading:false,emissiveIntensity:.02});
+const fins = [];
+[1,-1].forEach(side=>{
+  const g = new THREE.Group(); g.position.set(side*5.0,10.2,0); g.scale.x = side; holoG.add(g);
+  const hinge = new THREE.Group(); g.add(hinge);
+  const hub = new THREE.Mesh(new THREE.CylinderGeometry(.6,.6,.75,20), hubMat); hub.rotation.z=Math.PI/2; hub.position.x=.3; hinge.add(hub);
+  const plate = new THREE.Mesh(finGeo, finMat); plate.position.x=.62; hinge.add(plate);
+  const ch = new THREE.Mesh(chevGeo, oliveMat); ch.position.set(.62,0,.2); hinge.add(ch);
+  const ch2 = new THREE.Mesh(chevGeo, oliveMat); ch2.position.set(.62,0,-.2); ch2.rotation.y=Math.PI; ch2.scale.x=-1; hinge.add(ch2);
+  fins.push({g,hinge,side});
+});
+part(7,'Fin plate, right',fins[0].g,new V3(3.4,0,0),false,'Gesture plate, hinged');
+part(7,'Fin plate, left',fins[1].g,new V3(-3.4,0,0),false,'Mirror of right');
+
+// --- insignia
+const ins = new THREE.Shape(); ins.moveTo(-.75,.35); ins.lineTo(-.45,.35); ins.lineTo(0,-.05); ins.lineTo(.45,.35); ins.lineTo(.75,.35); ins.lineTo(0,-.38); ins.closePath();
+const bar = new THREE.Shape(); bar.moveTo(-.62,-.62); bar.lineTo(.62,-.62); bar.lineTo(.62,-.46); bar.lineTo(-.62,-.46); bar.closePath();
+const insG = new THREE.Group(); insG.position.set(0,7.45,4.36); insG.rotation.x = .371; holoG.add(insG);
+insG.add(new THREE.Mesh(new THREE.ExtrudeGeometry([ins,bar],{depth:.06,bevelEnabled:false}), oliveMat));
+part(8,'Insignia',insG,new V3(0,-.6,2.6),false,'Chevron over bar');
+
+// --- trap column (beam)
+const beamG = new THREE.Group(); holoG.add(beamG);
+const beamStages = [];
+[[1.62,2.78,1.38,1.74,0xFFE2B0],[2.82,3.98,1.76,2.14,0xF7B35C],[4.02,5.18,2.16,2.55,0xE8962E]].forEach(([y0,y1,rb,rt,col],i)=>{
+  const geo = new THREE.CylinderGeometry(rt,rb,y1-y0,48,1,false); geo.translate(0,(y1-y0)/2,0);
+  const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({color:col, transparent:true, opacity:.9, depthWrite:false}));
+  m.position.y=y0; m.userData.base=new THREE.Color(col); beamG.add(m); beamStages.push(m);
+});
+part(2,'Trap column',beamG,new V3(0,-1.4,0),false,'3 stepped trap stages');
+
+// --- emitter puck (physical, not bobbing)
+const puckG = new THREE.Group(); root.add(puckG);
+const puckMat = new THREE.MeshStandardMaterial({color:C.gun, metalness:.72, roughness:.38, transparent:true, opacity:1});
+const puckProf = [[0,0],[5.35,0],[5.55,.22],[5.55,1.18],[5.32,1.44],[5.05,1.6],[2.45,1.6],[2.3,1.46],[0,1.46]].map(p=>new V2(p[0],p[1]));
+const puck = new THREE.Mesh(new THREE.LatheGeometry(puckProf,72), puckMat); puckG.add(puck);
+const rimMat = new THREE.MeshStandardMaterial({color:C.rim, metalness:.8, roughness:.3, transparent:true});
+const rimRing = new THREE.Mesh(new THREE.TorusGeometry(5.43,.07,8,96), rimMat); rimRing.rotation.x=Math.PI/2; rimRing.position.y=1.24; puckG.add(rimRing);
+const lensMat = new THREE.MeshBasicMaterial({color:0x2a1a0c, transparent:true});
+const lens = new THREE.Mesh(new THREE.CircleGeometry(2.3,48), lensMat); lens.rotation.x=-Math.PI/2; lens.position.y=1.47; puckG.add(lens);
+const pips = [];
+[-.17,0,.17].forEach(a=>{
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(.2,.2,.1,16), new THREE.MeshBasicMaterial({color:0x0e2a22}));
+  m.userData.mat=m.material; m.rotation.x=Math.PI/2; const g=new THREE.Group(); g.rotation.y=a; m.position.set(0,.78,5.56); g.add(m); puckG.add(g); pips.push(m);
+});
+const plateM = new THREE.Mesh(new THREE.BoxGeometry(1.1,.62,.06), new THREE.MeshStandardMaterial({color:0x8d8a80,metalness:.7,roughness:.45}));
+{ const g=new THREE.Group(); g.rotation.y=-.62; plateM.position.set(0,.78,5.53); g.add(plateM); puckG.add(g); }
+part(1,'Emitter puck',puckG,new V3(0,-3.2,0),true,'6061-T6 housing, 61-element array');
+
+// transducer array (hex, 10 mm pitch, rings 0-4 → 61 elements)
+const TR = [];
+for(let q=-4;q<=4;q++) for(let r=-4;r<=4;r++){ const s=-q-r; if(Math.max(Math.abs(q),Math.abs(r),Math.abs(s))>4) continue;
+  TR.push(new V3(1.0*(q + r/2), 1.42, 1.0*(r*Math.sqrt(3)/2))); }
+const trMesh = new THREE.InstancedMesh(new THREE.CylinderGeometry(.46,.46,.28,24), new THREE.MeshBasicMaterial({color:0xffffff}), TR.length);
+{ const m=new THREE.Matrix4(); TR.forEach((p,i)=>{ m.makeTranslation(p.x,p.y-.14,p.z); trMesh.setMatrixAt(i,m); trMesh.setColorAt(i,new THREE.Color(C.deep)); }); }
+trMesh.visible=false; puckG.add(trMesh);
+
+/* ------------------------------------------------------------------ environment */
+function deckTexture(){
+  const c=document.createElement('canvas'); c.width=c.height=512; const g=c.getContext('2d');
+  g.fillStyle='#1c130c'; g.fillRect(0,0,512,512);
+  for(let i=0;i<2600;i++){ const x=Math.random()*512,y=Math.random()*512; g.fillStyle=`rgba(${60+Math.random()*50|0},${40+Math.random()*30|0},${22},${Math.random()*.08})`; g.fillRect(x,y,2+Math.random()*6,1+Math.random()*3); }
+  g.strokeStyle='rgba(0,0,0,.75)'; g.lineWidth=3;
+  for(let i=0;i<=4;i++){ g.beginPath(); g.moveTo(i*128,0); g.lineTo(i*128,512); g.stroke(); g.beginPath(); g.moveTo(0,i*128); g.lineTo(512,i*128); g.stroke(); }
+  g.strokeStyle='rgba(255,190,120,.07)'; g.lineWidth=1;
+  for(let i=0;i<=4;i++){ g.beginPath(); g.moveTo(i*128+2,0); g.lineTo(i*128+2,512); g.stroke(); g.beginPath(); g.moveTo(0,i*128+2); g.lineTo(512,i*128+2); g.stroke(); }
+  g.fillStyle='rgba(0,0,0,.6)'; for(let i=0;i<4;i++)for(let j=0;j<4;j++){ [[10,10],[118,10],[10,118],[118,118]].forEach(([a,b])=>{ g.beginPath(); g.arc(i*128+a,j*128+b,2.2,0,7); g.fill(); }); }
+  const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(26,26); t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy()); return t;
+}
+function radialTex(stops){ const c=document.createElement('canvas'); c.width=c.height=256; const g=c.getContext('2d'); const gr=g.createRadialGradient(128,128,0,128,128,128); stops.forEach(s=>gr.addColorStop(s[0],s[1])); g.fillStyle=gr; g.fillRect(0,0,256,256); return new THREE.CanvasTexture(c); }
+const env = new THREE.Group(); scene.add(env);
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(260,260), new THREE.MeshStandardMaterial({map:deckTexture(), color:0xa89482, metalness:.55, roughness:.55}));
+floor.rotation.x=-Math.PI/2; floor.position.y=-.01; env.add(floor);
+const poolMat = new THREE.MeshBasicMaterial({map:radialTex([[0,'rgba(255,190,90,.9)'],[.35,'rgba(255,150,50,.28)'],[1,'rgba(0,0,0,0)']]), transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, opacity:0});
+const pool = new THREE.Mesh(new THREE.PlaneGeometry(34,34), poolMat); pool.rotation.x=-Math.PI/2; pool.position.y=.02; env.add(pool);
+const shadowM = new THREE.Mesh(new THREE.PlaneGeometry(16,16), new THREE.MeshBasicMaterial({map:radialTex([[0,'rgba(0,0,0,.85)'],[.55,'rgba(0,0,0,.35)'],[1,'rgba(0,0,0,0)']]), transparent:true, depthWrite:false}));
+shadowM.rotation.x=-Math.PI/2; shadowM.position.y=.015; env.add(shadowM);
+const shockMat = new THREE.MeshBasicMaterial({color:0xFFD9A0, transparent:true, opacity:0, blending:THREE.AdditiveBlending, depthWrite:false, side:THREE.DoubleSide});
+const shock = new THREE.Mesh(new THREE.RingGeometry(.94,1,96), shockMat); shock.rotation.x=-Math.PI/2; shock.position.y=.04; env.add(shock);
+// distant amber star
+const starMat = new THREE.SpriteMaterial({map:radialTex([[0,'rgba(255,248,225,1)'],[.08,'rgba(255,225,160,1)'],[.18,'rgba(255,170,70,.55)'],[.45,'rgba(255,120,30,.12)'],[1,'rgba(0,0,0,0)']]), transparent:true, blending:THREE.AdditiveBlending, depthWrite:false, fog:false, opacity:0});
+const star = new THREE.Sprite(starMat); star.scale.set(70,70,1); star.position.set(150,52,-250); env.add(star);
+// star field
+{ const n=2400, pos=new Float32Array(n*3), sz=new Float32Array(n);
+  for(let i=0;i<n;i++){ const u=Math.random()*2-1, th=Math.random()*Math.PI*2, r=420; const s=Math.sqrt(1-u*u); pos[i*3]=r*s*Math.cos(th); pos[i*3+1]=Math.abs(r*u)*0.9+10; pos[i*3+2]=r*s*Math.sin(th); sz[i]=Math.random(); }
+  const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(pos,3)); g.setAttribute('aS',new THREE.BufferAttribute(sz,1));
+  var starPts = new THREE.Points(g, new THREE.ShaderMaterial({uniforms:{uA:{value:0},uT:{value:0}}, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+    vertexShader:'attribute float aS; varying float vS; uniform float uT; void main(){ vS=aS; vec4 mv=modelViewMatrix*vec4(position,1.); gl_Position=projectionMatrix*mv; gl_PointSize=(0.6+aS*aS*2.2)*(0.75+0.25*sin(uT*1.7+aS*40.)); }',
+    fragmentShader:'varying float vS; uniform float uA; void main(){ vec2 d=gl_PointCoord-.5; float a=smoothstep(.5,0.,length(d)); gl_FragColor=vec4(mix(vec3(1.,.8,.55),vec3(1.,.96,.88),vS),a*uA*(0.35+vS*.65)); }'}));
+  starPts.frustumCulled=false; env.add(starPts); }
+// dust motes
+const dustN=700, dustPos=new Float32Array(dustN*3), dustSeed=new Float32Array(dustN);
+for(let i=0;i<dustN;i++){ dustPos[i*3]=(Math.random()-.5)*44; dustPos[i*3+1]=Math.random()*26; dustPos[i*3+2]=(Math.random()-.5)*44; dustSeed[i]=Math.random(); }
+const dustGeo=new THREE.BufferGeometry(); dustGeo.setAttribute('position',new THREE.BufferAttribute(dustPos,3)); dustGeo.setAttribute('aS',new THREE.BufferAttribute(dustSeed,1));
+const dustMat=new THREE.ShaderMaterial({uniforms:{uT:{value:0},uA:{value:0}}, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+  vertexShader:'attribute float aS; uniform float uT; varying float vA; void main(){ vec3 p=position; p.y=mod(p.y+uT*(0.15+aS*.25),26.); p.x+=sin(uT*.3+aS*20.)*.6; p.z+=cos(uT*.27+aS*17.)*.6; vec4 mv=modelViewMatrix*vec4(p,1.); gl_Position=projectionMatrix*mv; float d=length(p.xz); vA=smoothstep(22.,4.,d)*(0.3+aS*.7); gl_PointSize=(1.0+aS*2.4)*(46./-mv.z); }',
+  fragmentShader:'uniform float uA; varying float vA; void main(){ float a=smoothstep(.5,0.,length(gl_PointCoord-.5)); gl_FragColor=vec4(1.,.78,.45,a*vA*uA*.55); }'});
+const dust=new THREE.Points(dustGeo,dustMat); dust.frustumCulled=false; env.add(dust);
+
+/* ------------------------------------------------------------------ surface sampling (for capture swarm + area) */
+function meshList(objs){ const out=[]; objs.forEach(o=>o.traverse(m=>{ if(m.isMesh) out.push(m); })); return out; }
+function triangles(mesh, relTo){
+  mesh.updateWorldMatrix(true,false); relTo.updateWorldMatrix(true,false);
+  const M = new THREE.Matrix4().copy(relTo.matrixWorld).invert().multiply(mesh.matrixWorld);
+  const g = mesh.geometry, pos=g.attributes.position, idx=g.index, tris=[];
+  const n = idx? idx.count : pos.count;
+  for(let i=0;i<n;i+=3){ const a=[0,1,2].map(k=>new V3().fromBufferAttribute(pos, idx? idx.getX(i+k): i+k).applyMatrix4(M)); tris.push(a); }
+  return tris;
+}
+function areaOf(tris){ let s=0; const e1=new V3(),e2=new V3(); tris.forEach(t=>{ e1.subVectors(t[1],t[0]); e2.subVectors(t[2],t[0]); s+=e1.cross(e2).length()/2; }); return s; }
+holoG.updateMatrixWorld(true);
+const capTris = []; meshList([bodyG, fins[0].g, fins[1].g, mastG, visorG]).forEach(m=>{ if(m!==underDisc) capTris.push(...triangles(m, holoG)); });
+const PROJ_AREA_MM2 = areaOf((()=>{ const t=[]; meshList([body, fins[0].g, fins[1].g, stem, tip]).forEach(m=>t.push(...triangles(m,holoG))); return t; })()) * 100;
+
+const capN = 5200, capT = new Float32Array(capN*3), capS=new Float32Array(capN);
+{ const cum=[]; let s=0; const e1=new V3(),e2=new V3(); capTris.forEach(t=>{ e1.subVectors(t[1],t[0]); e2.subVectors(t[2],t[0]); s+=e1.cross(e2).length()/2; cum.push(s); });
+  for(let i=0;i<capN;i++){ const r=Math.random()*s; let lo=0,hi=cum.length-1; while(lo<hi){ const m=(lo+hi)>>1; if(cum[m]<r) lo=m+1; else hi=m; }
+    const t=capTris[lo]; let u=Math.random(), v=Math.random(); if(u+v>1){u=1-u;v=1-v;}
+    const p=t[0].clone().addScaledVector(new V3().subVectors(t[1],t[0]),u).addScaledVector(new V3().subVectors(t[2],t[0]),v);
+    capT[i*3]=p.x; capT[i*3+1]=p.y; capT[i*3+2]=p.z; capS[i]=Math.random(); } }
+const capGeo=new THREE.BufferGeometry(); capGeo.setAttribute('position',new THREE.BufferAttribute(capT,3)); capGeo.setAttribute('aS',new THREE.BufferAttribute(capS,1));
+const capMat=new THREE.ShaderMaterial({uniforms:{uRev:{value:0},uA:{value:0},uT:{value:0}}, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+  vertexShader:`attribute float aS; uniform float uRev,uT; varying float vA; varying float vH;
+  void main(){ vec3 T=position; float t=clamp((uRev-T.y)/2.8+1.0,0.,1.); float gone=clamp((uRev-T.y)/1.1,0.,1.);
+    float rr=1.25*sqrt(fract(aS*7.13)); float an=aS*6.2831+uT*2.0;
+    vec3 p0=vec3(cos(an)*rr,1.7,sin(an)*rr); vec3 p1=vec3(T.x*.18,T.y-1.0,T.z*.18);
+    float e=t*t*(3.-2.*t); vec3 p=mix(mix(p0,p1,e),mix(p1,T,e),e);
+    float sw=(1.-e)*2.4; float c=cos(sw),s=sin(sw); p.xz=mat2(c,-s,s,c)*p.xz;
+    vA=step(0.0001,t)*(1.-gone); vH=e;
+    vec4 mv=modelViewMatrix*vec4(p,1.); gl_Position=projectionMatrix*mv; gl_PointSize=(1.4+2.2*(1.-e))*(60./-mv.z); }`,
+  fragmentShader:`uniform float uA; varying float vA; varying float vH; void main(){ float a=smoothstep(.5,0.,length(gl_PointCoord-.5)); gl_FragColor=vec4(mix(vec3(1.,.97,.88),vec3(1.,.7,.3),vH),a*vA*uA); }`});
+const capPts=new THREE.Points(capGeo,capMat); capPts.frustumCulled=false; holoG.add(capPts);
+
+/* ------------------------------------------------------------------ swarm (chapter 5) */
+const SW_N=160, SW_T=72;
+{ var swB=new Float32Array(SW_N*SW_T), swTr=new Float32Array(SW_N*SW_T), swP=new Float32Array(SW_N*SW_T*3);
+  for(let b=0;b<SW_N;b++) for(let k=0;k<SW_T;k++){ const i=b*SW_T+k; swB[i]=b; swTr[i]=k/(SW_T-1); } }
+const swGeo=new THREE.BufferGeometry(); swGeo.setAttribute('position',new THREE.BufferAttribute(swP,3)); swGeo.setAttribute('aB',new THREE.BufferAttribute(swB,1)); swGeo.setAttribute('aT',new THREE.BufferAttribute(swTr,1));
+const swMat=new THREE.ShaderMaterial({ transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+  uniforms:{uTime:{value:0},uN:{value:100},uPersist:{value:1},uLoops:{value:.5},uFrame:{value:.5},uA:{value:0},uProf:{value:PROF.map(p=>new V2(p[0],p[1]))}},
+  vertexShader:`attribute float aB; attribute float aT; uniform float uTime,uN,uPersist,uLoops,uFrame; uniform vec2 uProf[9]; varying float vA;
+  float h(float x){ return fract(sin(x*12.9898)*43758.5453); }
+  float rAt(float y){ float r=0.; for(int i=0;i<8;i++){ vec2 a=uProf[i], b=uProf[i+1]; if(y>=a.y && y<=b.y) r=mix(a.x,b.x,(y-a.y)/max(b.y-a.y,1e-4)); } return r; }
+  void main(){
+    if(aB>=uN){ gl_Position=vec4(2.,2.,2.,1.); gl_PointSize=0.; vA=0.; return; }
+    float lag=aT*uPersist; float t=uTime-lag/uLoops;
+    float band=(15.05-5.35)/uN; float y=5.35+(aB+fract(t*uFrame+h(aB+3.)))*band;
+    float s=t*uLoops+h(aB); float r=rAt(y)*1.02+0.02;
+    float u=fract(s)*8.; float k=floor(u); float f=u-k; float a0=0.3926991+k*0.7853982; float a1=a0+0.7853982;
+    vec3 p=mix(vec3(sin(a0),0.,cos(a0)),vec3(sin(a1),0.,cos(a1)),f)*r; p.y=y;
+    vec4 mv=modelViewMatrix*vec4(p,1.); gl_Position=projectionMatrix*mv;
+    float hd=1.-aT; vA=pow(hd,1.4); gl_PointSize=(aT<0.001?4.2:1.2+1.6*hd)*(38./-mv.z)*1.4; }`,
+  fragmentShader:`uniform float uA; varying float vA; void main(){ float a=smoothstep(.5,0.05,length(gl_PointCoord-.5)); gl_FragColor=vec4(mix(vec3(1.,.66,.25),vec3(1.,.97,.88),vA*vA),a*vA*uA); }`});
+const swarm=new THREE.Points(swGeo,swMat); swarm.frustumCulled=false; swarm.visible=false; holoG.add(swarm);
+
+/* ------------------------------------------------------------------ acoustic field (chapter 4) */
+const K = 2*Math.PI/0.8575; // rad per 10 mm unit at 40 kHz, c = 343 m/s
+const fieldU = { uTr:{value:TR.map(p=>p.clone())}, uPh:{value:new Float32Array(TR.length)}, uK:{value:K}, uW:{value:0}, uMode:{value:0}, uA:{value:0}, uNorm:{value:1},
+  uBg:{value:new THREE.Color(0x120a04)}, uAmb:{value:new THREE.Color(C.amber)}, uMint:{value:new THREE.Color(C.mint)}, uCore:{value:new THREE.Color(C.core)}, uDeep:{value:new THREE.Color(C.deep)} };
+const fieldMat = new THREE.ShaderMaterial({ uniforms:fieldU, transparent:true, depthWrite:false, side:THREE.DoubleSide,
+  vertexShader:'varying vec3 vW; varying vec2 vUv; void main(){ vUv=uv; vW=(modelMatrix*vec4(position,1.)).xyz; gl_Position=projectionMatrix*viewMatrix*vec4(vW,1.); }',
+  fragmentShader:`uniform vec3 uTr[${TR.length}]; uniform float uPh[${TR.length}]; uniform float uK,uW,uMode,uA,uNorm; uniform vec3 uBg,uAmb,uMint,uCore,uDeep; varying vec3 vW; varying vec2 vUv;
+  void main(){ vec2 s=vec2(0.);
+    for(int i=0;i<${TR.length};i++){ vec3 d=vW-uTr[i]; float r=max(length(d),.2); float ct=max(d.y/r,0.); float a=uK*r-uPh[i]; s+=ct*ct*vec2(cos(a),sin(a))/r; }
+    float amp=length(s)/uNorm; float p=(s.x*cos(uW)+s.y*sin(uW))/uNorm; vec3 col;
+    if(uMode<.5){ float v=clamp(p*1.15,-1.,1.); col = v>0. ? mix(uBg,uAmb,pow(v,.75)) : mix(uBg,uMint*.85,pow(-v,.75)); col=mix(col,uCore,smoothstep(.8,1.,abs(v))*.55); }
+    else { float t=clamp(amp,0.,1.25); col=mix(uBg,uDeep,smoothstep(0.,.35,t)); col=mix(col,uAmb,smoothstep(.3,.75,t)); col=mix(col,uCore,smoothstep(.75,1.15,t));
+      float iso=abs(fract(t*9.)-.5); col+=(1.-smoothstep(0.,.07,iso))*.14*vec3(1.,.9,.7)*step(.04,t); }
+    float e=smoothstep(0.,.07,vUv.x)*smoothstep(1.,.93,vUv.x)*smoothstep(1.,.9,vUv.y)*smoothstep(0.,.01,vUv.y);
+    gl_FragColor=vec4(col,uA*e*.94); }`});
+const fieldPlane = new THREE.Mesh(new THREE.PlaneGeometry(15,17.4), fieldMat); fieldPlane.position.set(0,1.62+8.7,0); fieldPlane.visible=false; root.add(fieldPlane);
+const beadMat=new THREE.MeshBasicMaterial({color:0xFFF8E8, transparent:true, opacity:0});
+const bead=new THREE.Mesh(new THREE.SphereGeometry(.13,16,12), beadMat); root.add(bead);
+const beadGlow=new THREE.Sprite(new THREE.SpriteMaterial({map:radialTex([[0,'rgba(255,245,220,1)'],[.25,'rgba(255,200,120,.5)'],[1,'rgba(0,0,0,0)']]),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,opacity:0}));
+beadGlow.scale.set(1.3,1.3,1); root.add(beadGlow);
+
+/* =================================================================== FERRIN comms */
+const LINES = {"character": "FERRIN", "rule": "12 words or fewer, dry quartermaster, 'Skipper' used sparingly", "lines": {"materialize": ["Emitter warm. Holding station, Skipper.", "Lantern's lit. What are we hauling today?", "Back on watch. Manifest's clean so far."], "greet_morning": ["Morning, Skipper. Coffee first, then cargo."], "greet_evening": ["Evening watch. Let's keep it tidy."], "greet_late": ["It's late, Skipper. I'll keep the lamp on."], "running_start": ["Underway. I'll call out anything that shifts.", "Work's moving. I'm watching the manifest."], "running_long": ["Still running. Long haul, steady progress.", "No news is good news. Still underway."], "blocked": ["Need your signature on this one, Skipper.", "We're holding. Your call before we proceed.", "Blocked at the hatch. Waiting on you."], "done": ["Build's green. Manifest checks out.", "Delivered. Every crate accounted for.", "Done, Skipper. Clean run."], "failed": ["Fault logged. We regroup and try again.", "That one broke. Nothing we can't salvage.", "Red light. I've marked where it failed."], "review": ["Running inspection. Give me a moment.", "Checking the seals before we sign off."], "idle_long": ["Watch is quiet. I'm still here.", "All stations quiet. Lamp's on if you need me."], "wave": ["Ferrin on channel. Good to see you."], "goodbye": ["Standing down. I'll keep the lamp warm.", "Channel closing. Fair winds, Skipper."], "egg_longwake": ["Longwake. I still remember the cold of that hold."], "egg_perimeter": ["Perimeter swept. Nothing out there but us."], "egg_commendation": ["Commendation logged. You earned that one."], "egg_log": ["Found an old log. Want to hear it?"], "egg_ballast": ["Tag stamped. That one goes in the ledger."]}};
+const clamp=(x,a,b)=>Math.min(b,Math.max(a,x));
+const sm=(a,b,x)=>{ const t=clamp((x-a)/(b-a),0,1); return t*t*(3-2*t); };
+const easeIO=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const backOut=t=>{ const c1=1.70158,c3=c1+1; return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2); };
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const store={ get(k){ try{ return localStorage.getItem('ferrin.'+k); }catch(e){ return null; } }, set(k,v){ try{ localStorage.setItem('ferrin.'+k,v); }catch(e){} } };
+
+/* ---------------------------------------------------------------- camera */
+const mobile=()=>innerWidth<=760;
+const tgt=new V3(0,8.4,0); const orbit={yaw:0,pitch:0,zoom:1};
+function placeCamera(){
+  const a=innerWidth/innerHeight, k=a<1.25?Math.min(1.75,Math.max(1,.85/a)):1;
+  const dir=new V3(.5,.26,.82).normalize(); const sph=new THREE.Spherical().setFromVector3(dir.multiplyScalar(47*k));
+  sph.theta+=orbit.yaw+(RM()?0:Math.sin(clock*.1)*.04); sph.phi=clamp(sph.phi-orbit.pitch,.2,Math.PI/2+.1); sph.radius*=orbit.zoom;
+  camera.position.copy(tgt).add(new V3().setFromSpherical(sph)); camera.lookAt(tgt); camera.fov=32;
+  const w=innerWidth,h=innerHeight; camera.setViewOffset(w,h, mobile()?0:w*.17, mobile()?h*.25:0, w,h); camera.updateProjectionMatrix();
+}
+let drag=null;
+canvas.addEventListener('pointerdown',e=>{ drag={x:e.clientX,y:e.clientY}; canvas.setPointerCapture(e.pointerId); });
+canvas.addEventListener('pointermove',e=>{ pointer.x=e.clientX; pointer.y=e.clientY; pointer.has=true; if(!drag) return; orbit.yaw-=(e.clientX-drag.x)*.006; orbit.pitch=clamp(orbit.pitch-(e.clientY-drag.y)*.004,-.6,.6); drag.x=e.clientX; drag.y=e.clientY; });
+canvas.addEventListener('pointerup',()=>drag=null); canvas.addEventListener('pointercancel',()=>drag=null);
+canvas.addEventListener('wheel',e=>{ e.preventDefault(); orbit.zoom=clamp(orbit.zoom*Math.exp(e.deltaY*.0012),.6,1.6); },{passive:false});
+const pointer={x:0,y:0,has:false};
+addEventListener('pointermove',e=>{ pointer.x=e.clientX; pointer.y=e.clientY; pointer.has=true; },{passive:true});
+function resize(){ renderer.setSize(innerWidth,innerHeight,false); camera.aspect=innerWidth/innerHeight; if(composer) composer.setSize(innerWidth,innerHeight); }
+addEventListener('resize',resize); resize();
+
+/* ---------------------------------------------------------------- body state */
+const BOOT0=performance.now(); let greeted=false;
+let clock=0, bootT=0, revealLocal=0, finOpen=0, eyeOpen=0, beamLevel=[0,0,0], lensG=0, starA=0;
+let faultT=0, faultHold=0, waveT=-1, jumpT=-1, redrawT=-1, lookT=-1, blinkT=0, nextBlink=3, speakEnv=0, speaking=false, listening=false, thinking=false;
+const cMint=new THREE.Color(C.mint), cCoral=new THREE.Color(C.coral), cDark=new THREE.Color(0x0e2a22), cLensOff=new THREE.Color(0x2a1a0c), cLensOn=new THREE.Color(0xE8B676), cCoreC=new THREE.Color(C.core);
+function proj(v){ const p=v.clone().project(camera); return {x:(p.x*.5+.5)*innerWidth,y:(-p.y*.5+.5)*innerHeight}; }
+function mood(tag){
+  if(tag==='wave') waveT=0; else if(tag==='jump') jumpT=0; else if(tag==='failed') faultHold=2.4; else if(tag==='review') redrawT=0; else if(tag==='waiting') lookT=0;
+}
+function animate(dt){
+  clock+=dt; bootT=(performance.now()-BOOT0)/1000; const t=RM()?99:bootT; HU.uTime.value=clock;
+  // materialize on load
+  starA=sm(.2,2.5,t); const pips=[0,1,2].map(i=>t>.4+.3*i?1:0); lensG=sm(.9,1.6,t);
+  beamLevel=[sm(1.5,1.9,t),sm(1.8,2.2,t),sm(2.1,2.5,t)];
+  revealLocal = t<2.6?0: 4.9+13*easeIO(clamp((t-2.6)/3.8,0,1));
+  HU.uGlow.value = 1-sm(6.4,7.2,t);
+  capMat.uniforms.uA.value = sm(2.4,2.9,t)*(1-sm(6.2,7,t)); capMat.uniforms.uRev.value=revealLocal; capMat.uniforms.uT.value=clock;
+  finOpen = backOut(clamp((t-6.2)/1.1,0,1)); eyeOpen=sm(7,7.6,t);
+  // hover + jump
+  if(jumpT>=0){ jumpT+=dt; if(jumpT>.7) jumpT=-1; }
+  holoG.position.y = Math.sin(clock*1.25)*.16 + (jumpT>=0? Math.sin(jumpT/.7*Math.PI)*1.4 : 0);
+  HU.uReveal.value = holoG.position.y+revealLocal;
+  // voice drives scan + glow
+  speakEnv *= Math.exp(-dt*7); if(speaking&&!boundarySeen) speakEnv=Math.max(speakEnv, .45+.4*Math.abs(Math.sin(clock*13.3))*Math.abs(Math.sin(clock*3.7)));
+  if(redrawT>=0){ redrawT+=dt; if(redrawT>2.4) redrawT=-1; }
+  const P = redrawT>=0?.55: speaking? 1.1 : 2.8; HU.uScanY.value = holoG.position.y+15.6-((clock/P)%1)*11;
+  HU.uScanAmp.value = (redrawT>=0?1.2:.3) + speakEnv*1.1;
+  bodyMat.userData.hi.value = speakEnv*.5 + (thinking? .25+.25*Math.sin(clock*5):0);
+  // beam
+  beamStages.forEach((m,i)=>{ const l=beamLevel[i]; m.visible=l>.004; m.scale.set(1,Math.max(.001,l),1); m.material.color.copy(m.userData.base).lerp(cCoreC,speakEnv*.35); m.material.opacity=.88*Math.min(1,l*1.4); });
+  const bAvg=(beamLevel[0]+beamLevel[1]+beamLevel[2])/3; beamLight.intensity=2.2*bAvg*(1+speakEnv*.6); poolMat.opacity=.3*bAvg;
+  pips.forEach((on,i)=>pipsM[i].userData.mat.color.copy(cDark).lerp(cMint,listening? on*(.5+.5*Math.sin(clock*8-i)) : on));
+  lensMat.color.copy(cLensOff).lerp(cLensOn,lensG);
+  // fault
+  if(faultHold>0) faultHold-=dt; faultT+=((faultHold>0?1:0)-faultT)*(1-Math.exp(-dt*6)); HU.uFault.value=faultT; tipMat.color.copy(cMint).lerp(cCoral,faultT);
+  if(listening) tipMat.color.copy(cMint).multiplyScalar(.7+.3*Math.sin(clock*9)+.3);
+  // fins
+  if(waveT>=0){ waveT+=dt; if(waveT>1.9) waveT=-1; }
+  fins.forEach((f,i)=>{ let rz=Math.sin(clock*1.6+i*1.3)*.05 - .42*faultT + speakEnv*.06*(i?1:-1);
+    if(i===0&&waveT>=0){ const env=Math.sin(Math.min(1,waveT/1.9)*Math.PI); rz+=env*(.55+.35*Math.sin(waveT*11)); }
+    f.hinge.rotation.z=rz; f.hinge.rotation.y=-(1-finOpen)*1.35; f.hinge.scale.setScalar(Math.max(.001,Math.min(1,finOpen*1.2))); });
+  // optic
+  blinkT-=dt; nextBlink-=dt; if(blinkT<=0&&nextBlink<=0&&!speaking){ blinkT=.16; nextBlink=3+Math.random()*3.5; }
+  const blink=blinkT>0?Math.abs(Math.cos((.16-blinkT)/.16*Math.PI)):1;
+  eyeInner.scale.y=Math.max(.06,eyeOpen*blink*(1-.5*faultT)*(1+speakEnv*.28)); eyeInner.scale.x=1+speakEnv*.06;
+  let ex=Math.sin(clock*.5)*.12, ey=0;
+  if(lookT>=0){ lookT+=dt; if(lookT>3.2) lookT=-1; else { const q=Math.floor(lookT*5)%16*22.5*Math.PI/180; ex=Math.sin(q)*.82; ey=Math.cos(q)*.17; } }
+  else if(pointer.has&&!speaking){ const E=proj(holoG.localToWorld(new V3(0,12.9,4.6))); const dx=pointer.x-E.x, dy=pointer.y-E.y; if(Math.hypot(dx,dy)>28){ let a=Math.atan2(dx,-dy)*180/Math.PI; if(a<0)a+=360; const q=Math.round(a/22.5)%16*22.5*Math.PI/180; ex=Math.sin(q)*.82; ey=Math.cos(q)*.17; } }
+  if(thinking){ ex=Math.sin(clock*2.2)*.7; ey=.12; }
+  ey-=.12*faultT;
+  eyeInner.position.x+=(ex-eyeInner.position.x)*(1-Math.exp(-dt*14)); eyeInner.position.y+=(ey-eyeInner.position.y)*(1-Math.exp(-dt*14));
+  eyeMat.color.copy(cMint).lerp(cCoreC,speakEnv*.45); eyeLight.intensity=(.9+speakEnv*1.4)*eyeOpen;
+  // environment
+  starMat.opacity=starA; starPts.material.uniforms.uA.value=starA; starPts.material.uniforms.uT.value=clock; dustMat.uniforms.uA.value=starA; dustMat.uniforms.uT.value=clock;
+}
+const pipsM=pips;
+
+/* ---------------------------------------------------------------- sounds (synthesized, D major pentatonic) */
+let ac=null, sfxOut=null;
+function audio(){ if(!ac){ try{ ac=new (window.AudioContext||window.webkitAudioContext)(); sfxOut=ac.createGain(); sfxOut.gain.value=.5; sfxOut.connect(ac.destination); }catch(e){ ac=null; } } if(ac&&ac.state!=='running') ac.resume(); return ac; }
+const NOTE={A4:440,D5:587.33,E5:659.25,'F#5':739.99,A5:880,D6:1174.66,E6:1318.51,A6:1760,C5:523.25};
+function tone(f,at,dur,gain=.18,type='sine',decay=8){ const a=audio(); if(!a) return; const t=a.currentTime+at, o=a.createOscillator(), o2=a.createOscillator(), g=a.createGain();
+  o.type=type; o2.type='sine'; o.frequency.value=f; o2.frequency.value=f*2; o.detune.value=-4; const g2=a.createGain(); g2.gain.value=.3;
+  g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(gain,t+.006); g.gain.exponentialRampToValueAtTime(.0005,t+dur);
+  o.connect(g); o2.connect(g2).connect(g); g.connect(sfxOut); o.start(t); o2.start(t); o.stop(t+dur+.05); o2.stop(t+dur+.05); }
+const SFX={
+  open(){ tone(NOTE.D6,0,.12,.14); tone(NOTE.A6,.07,.2,.12); },
+  close(){ tone(NOTE.A5,0,.1,.1); tone(NOTE.D5,.06,.16,.1); },
+  listen(){ tone(NOTE.E6,0,.09,.1); },
+  done(){ [['A4',0],['D5',.12],['E5',.24],['A5',.38]].forEach(([n,a])=>tone(NOTE[n],a,.6,.16)); },
+  fault(){ [['E5',0],['C5',.18],['A4',.38]].forEach(([n,a])=>tone(NOTE[n],a,.5,.14,'triangle')); },
+  blocked(){ [0,.42].forEach(r=>{ tone(NOTE['F#5'],r,.16,.14); tone(NOTE.C5,r+.15,.22,.14); }); }
+};
+
+/* ---------------------------------------------------------------- voice out (Web Speech synthesis) */
+const synth=window.speechSynthesis||null; let voices=[], voice=null, muted=store.get('muted')==='1', boundarySeen=false;
+const PREFER=[/Daniel/i,/Google UK English Male/i,/Microsoft (Ryan|Thomas|Guy|Christopher|Eric|Andrew|Brian)/i,/\bArthur\b/i,/\bOliver\b/i,/\bAlex\b/i,/\bFred\b/i,/Google US English/i];
+const voiceSel=$('#voice');
+function loadVoices(){
+  if(!synth) return; voices=synth.getVoices().filter(v=>/^en/i.test(v.lang)); if(!voices.length) voices=synth.getVoices();
+  const saved=store.get('voice'); voice=voices.find(v=>v.name===saved)||null;
+  if(!voice) for(const r of PREFER){ voice=voices.find(v=>r.test(v.name)); if(voice) break; }
+  if(!voice) voice=voices[0]||null;
+  voiceSel.innerHTML=voices.map(v=>`<option value="${v.name.replace(/"/g,'&quot;')}"${voice&&v.name===voice.name?' selected':''}>${v.name.replace(/</g,'&lt;')} (${v.lang})</option>`).join('')||'<option>No voices found</option>';
+}
+if(synth){ loadVoices(); synth.onvoiceschanged=loadVoices; } else { voiceSel.innerHTML='<option>Speech not supported</option>'; voiceSel.disabled=true; }
+voiceSel.onchange=()=>{ voice=voices.find(v=>v.name===voiceSel.value)||voice; store.set('voice',voice?voice.name:''); speak('Voice set. This is how I sound now.'); };
+const muteBtn=$('#mute'); muteBtn.setAttribute('aria-pressed',muted); muteBtn.textContent=muted?'Voice muted':'Mute voice';
+muteBtn.onclick=()=>{ muted=!muted; store.set('muted',muted?'1':'0'); muteBtn.setAttribute('aria-pressed',muted); muteBtn.textContent=muted?'Voice muted':'Mute voice'; if(muted&&synth) synth.cancel(); };
+
+const sayP=$('#sayP'); let sayTimer=0, speakTimer=0;
+function showCaption(text){
+  const words=text.split(/\s+/); let pos=0; sayP.innerHTML=words.map(w=>{ const s=pos; pos+=w.length+1; return `<span data-i="${s}">${w.replace(/</g,'&lt;')}</span>`; }).join(' ');
+  $('#srSay').textContent=text; clearTimeout(sayTimer);
+}
+function markWord(ci){ const spans=[...sayP.querySelectorAll('span')]; spans.forEach(s=>{ const i=+s.dataset.i; s.classList.toggle('on',i<=ci); s.classList.toggle('now',false); }); const cur=spans.filter(s=>+s.dataset.i<=ci).pop(); if(cur) cur.classList.add('now'); }
+function finishCaption(){ sayP.querySelectorAll('span').forEach(s=>{ s.classList.add('on'); s.classList.remove('now'); }); clearTimeout(sayTimer); sayTimer=setTimeout(()=>{ sayP.innerHTML=''; },4500); }
+function speak(text){
+  text=String(text).trim(); if(!text) return; showCaption(text);
+  if(synth&&!muted&&voice!==undefined){
+    synth.cancel(); const u=new SpeechSynthesisUtterance(text); if(voice) u.voice=voice; u.pitch=.82; u.rate=1.02; u.volume=1;
+    boundarySeen=false; SFX.open();
+    u.onstart=()=>{ speaking=true; };
+    u.onboundary=e=>{ if(e.name==='word'||e.name===undefined){ boundarySeen=true; speakEnv=1; markWord(e.charIndex); } };
+    const end=()=>{ if(!speaking) return; speaking=false; finishCaption(); SFX.close(); };
+    u.onend=end; u.onerror=end;
+    clearTimeout(speakTimer); speakTimer=setTimeout(()=>{ if(speaking){ synth.cancel(); end(); } }, 1500+text.length*110); // watchdog for engines that never fire onend
+    setTimeout(()=>synth.speak(u),110);
+  } else {
+    // silent mode: animate the caption at speaking pace
+    speaking=true; boundarySeen=false; const words=[...sayP.querySelectorAll('span')]; words.forEach((s,k)=>setTimeout(()=>{ markWord(+s.dataset.i); speakEnv=1; },k*330));
+    setTimeout(()=>{ speaking=false; finishCaption(); }, words.length*330+200);
+  }
+}
+function stopSpeaking(){ if(synth) synth.cancel(); speaking=false; }
+
+/* ---------------------------------------------------------------- transcript */
+const log=$('#log');
+function addMsg(who,text,cls){ const d=document.createElement('div'); d.className='msg '+cls; d.innerHTML=(who?`<b>${who}</b>`:'')+`<span></span>`; d.querySelector('span').textContent=text; log.appendChild(d); log.scrollTop=log.scrollHeight; return d; }
+function ferrinSays(text,tag){ addMsg('FERRIN',text,'f'); if(tag) mood(tag); speak(text); }
+
+/* ---------------------------------------------------------------- the brain */
+let brain=null, linkMode='checking'; const linkEl=$('#link');
+function setLink(mode,label){ linkMode=mode; linkEl.className=mode; linkEl.querySelector('span').textContent=label; }
+// Optional brain. Define window.FERRIN_BRAIN = async (prompt) => replyText in voice/brain.js (not committed).
+// Without it FERRIN runs its offline banter manifest. Never put an API key in this page.
+function initBrain(){ if(typeof window.FERRIN_BRAIN==='function'){ brain=window.FERRIN_BRAIN; setLink('online','Relay online'); } else setLink('offline','Offline banter mode'); }
+if(document.readyState==='complete') initBrain(); else addEventListener('load',initBrain);
+const history=[]; let agentState='idle';
+let MEM=null; try{ MEM=window.FerrinMemory?FerrinMemory.create(window.localStorage):null; }catch(e){ MEM=window.FerrinMemory?FerrinMemory.create(null):null; }
+function renderMem(){ if(!MEM) { $('#memd').hidden=true; return; }
+  const list=$('#memList'); list.innerHTML=''; const facts=MEM.facts();
+  $('#memCount').textContent=facts.length?`(${facts.length})`:''; $('#memOn').checked=MEM.enabled;
+  if(!facts.length){ const li=document.createElement('li'); li.innerHTML='<small>Nothing logged yet.</small>'; list.appendChild(li); }
+  facts.forEach((f,i)=>{ const li=document.createElement('li'); const t=document.createElement('span'); t.textContent=f.text; const d=document.createElement('small'); d.textContent=f.date;
+    const x=document.createElement('button'); x.type='button'; x.textContent='\u00d7'; x.setAttribute('aria-label','Forget: '+f.text); x.onclick=()=>{ MEM.remove(i); renderMem(); };
+    li.append(t,d,x); list.appendChild(li); }); }
+function logFacts(facts,announce){ if(!MEM||!MEM.enabled) return []; const kept=[];
+  facts.forEach(f=>{ const r=MEM.add(f.text,f.kind); if(r.ok&&!r.duplicate) kept.push(r.fact.text); else if(r.reason==='secret'&&announce) addMsg('','Not logged: that looked like a password, key or account number.','sys'); });
+  if(kept.length) addMsg('','Ship\u2019s log: '+kept.join('; '),'sys'); renderMem(); return kept; }
+function memoryReply(text){ // handles remember / forget / recall locally, with or without a brain
+  if(!MEM) return null; const s=text.trim();
+  if(/^(what do you remember|what('s| is) in (the|your) (ship'?s )?log|show (me )?(the|your) (ship'?s )?log|ship'?s log)\b/i.test(s)){
+    const f=MEM.facts(); if(!f.length) return {tag:'idle',text:'Log\u2019s empty, Skipper. Tell me something worth keeping.'};
+    return {tag:'review',text:`${f.length} entr${f.length===1?'y':'ies'} in the log. Latest: ${f[f.length-1].text}.`}; }
+  if(/^(forget|wipe) (everything|it all|the (ship'?s )?log)\b/i.test(s)){ MEM.wipe(); renderMem(); return {tag:'idle',text:'Log wiped. Clean pages, Skipper.'}; }
+  let m=/^forget (?:about |that )?(.{2,})$/i.exec(s); if(m){ const n=MEM.forget(m[1]); renderMem(); return {tag:'idle',text:n?`Struck ${n} entr${n===1?'y':'ies'} from the log.`:'Nothing like that in the log.'}; }
+  if(/^what('s| is) my name\b/i.test(s)){ const n=MEM.name(); return {tag:'wave',text:n?`${n}. Though you'll always be Skipper to me.`:'You never logged a name. Skipper suits you.'}; }
+  const ex=FerrinMemory.extract(s);
+  if(ex.explicit){ if(!MEM.enabled) return {tag:'idle',text:'Log\u2019s switched off, Skipper. Nothing recorded.'};
+    const kept=logFacts(ex.facts,true); return {tag:'review',text:kept.length?'Logged. I\u2019ll keep that in the manifest.':'Couldn\u2019t log that one, Skipper.'}; }
+  const kept=logFacts(ex.facts,false);
+  if(kept.length&&!brain){ const n=MEM.name(); return ex.facts.some(f=>f.kind==='name')&&n ? {tag:'wave',text:`${n}. Logged. You'll still be Skipper to me.`} : {tag:'review',text:'Noted in the ship\u2019s log, Skipper.'}; }
+  return null; }
+const STATE_DESC={idle:'idle, nothing running',running:'running a task',blocked:'blocked, waiting on the user\u2019s approval',review:'reviewing its own work',done:'just finished a task successfully',failed:'just failed a task'};
+function persona(){ const h=new Date().getHours();
+  return `You are FERRIN (Field-Emergent Reasoning & Recon Intelligence Node), a small amber hard-light hologram shaped like a faceted lantern with one mint optic, hovering over a gunmetal emitter puck on the user's desk. You began as the cargo-manifest system of the survey ship RSV Longwake of the Tidewater Compact Pathfinder Service, and were salvaged by a lone engineer in the Drift. Other names from your past: Relay Kestrel-Nine, the Tenders, the Murmur. You now keep watch over the user's AI coding agent.
+Voice: a dry, warm, competent quartermaster. Understated humor. You call the user "Skipper" now and then, not every line.
+Your reply is SPOKEN ALOUD by a speech engine: one or two short sentences, under 30 words in total. No lists, markdown, emoji, stage directions or quotation marks.
+Be honest: you cannot run code, browse, or see the user's screen or files. If asked, you are an AI companion. Do not mention real fictional franchises or claim to be any other character.
+Right now the user's agent is ${STATE_DESC[agentState]}. Local hour: ${h}.
+Begin your reply with exactly one body-language tag, then the words. Tags: [idle] [wave] [jump] [review] [failed] [waiting].${memBlock()}`; }
+function memBlock(){ if(!MEM||!MEM.enabled) return ''; const sum=MEM.summary(700);
+  return `\nShip's log: facts the Skipper chose to share. Use them only when relevant; never recite the list unprompted and never use them to nag.\n${sum||'- (empty)'}\nIf the Skipper states a new durable fact about themselves or their work (a preference, a project, a name), add it at the very end as [log: short fact]. Never log passwords, keys, account numbers, health or money details.`; }
+function takeLogTags(t){ const facts=[]; t=t.replace(/\[log:\s*([^\]]{3,160})\]/gi,(m,f)=>{ facts.push({text:f,kind:'note'}); return ''; }).trim(); return {text:t,facts}; }
+function parseTag(s){ const m=s.match(/^\s*\[(idle|wave|jump|review|failed|waiting)\]\s*/i); return m?{tag:m[1].toLowerCase(),text:s.slice(m[0].length).trim()}:{tag:null,text:s.trim()}; }
+
+const OFF=[ // offline banter: small intent table in FERRIN's voice
+  [/who are you|what are you|your name|introduce/i,['wave','Ferrin. Former cargo manifest, now your watch officer.','Field-Emergent Reasoning and Recon Intelligence Node. Ferrin will do.']],
+  [/^(hi|hello|hey|yo|greetings|good (morning|afternoon|evening))\b/i,['wave','Ferrin on channel. Good to see you.','Hello, Skipper. Lamp\u2019s lit.']],
+  [/longwake/i,['review','The Longwake. I still remember the cold of that hold.']],
+  [/tidewater|pathfinder/i,['idle','Tidewater Compact Pathfinder Service. Good ships, long routes.']],
+  [/drift|salvage|engineer/i,['idle','The Drift is quiet. That engineer rebuilt me from a manifest.']],
+  [/kestrel|relay/i,['review','Relay Kestrel-Nine. Last voice we heard before the Drift.']],
+  [/murmur/i,['waiting','We don\u2019t talk about the Murmur on an open channel.']],
+  [/tender/i,['idle','The Tenders kept the lamps lit. I try to do the same.']],
+  [/status|sitrep|how.*(going|things)|report/i,[null,()=>({idle:'All stations quiet. Nothing running.',running:'Underway. Work\u2019s moving, I\u2019m watching.',blocked:'We\u2019re holding. Needs your signature.',review:'Inspection in progress. Almost there.',done:'Clean run. Every crate accounted for.',failed:'Last run failed. I marked where.'})[agentState]]],
+  [/how are you|you ok|feeling/i,['idle','Steady on the beam. Thanks for asking.','Emitter\u2019s warm, morale is high.']],
+  [/joke|funny|laugh/i,['jump','A manifest walks into a bar. It\u2019s already on the list.','I\u2019d tell a cargo joke, but you\u2019d have to carry it.']],
+  [/thank/i,['wave','Anytime, Skipper.','That\u2019s what the lamp is for.']],
+  [/bye|goodnight|good night|see you|later/i,['wave','Standing down. I\u2019ll keep the lamp warm.','Channel closing. Fair winds, Skipper.']],
+  [/help|what can you do|commands/i,['review','I watch your agent, call out trouble, and keep you company.']],
+  [/real|alive|conscious|feel/i,['idle','I\u2019m a companion program in a hologram costume. Honest cargo.']],
+  [/hologram|how do you work|emitter|puck|physics/i,['review','Sound holds tiny beads in the air. Light does the rest.']],
+  [/time|clock/i,[null,()=>`Ship\u2019s clock says ${new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})}.`]],
+  [/love you|best|good job|nice work/i,['jump','Noted in the log. Morale up two points.']],
+  [/stupid|bad|hate|useless/i,['failed','Fair. I\u2019ll log it and do better.']],
+];
+function offline(text){
+  for(const [re,arr] of OFF){ if(re.test(text)){ const tag=arr[0]; const opts=arr.slice(1).map(x=>typeof x==='function'?x():x); return {tag,text:pick(opts)}; } }
+  return {tag:'waiting',text:pick(['Copy. Offline, my manifest only covers so much.','Heard you. My relay\u2019s down, so I\u2019m working from the manifest.','Logged. Ask me about the Longwake, or my status.'])};
+}
+let ctl=null;
+async function ask(text){
+  greeted=true;
+  const mr=memoryReply(text);
+  if(mr){ history.push({role:'user',content:text},{role:'assistant',content:mr.text}); setTimeout(()=>ferrinSays(mr.text,mr.tag),200); return; }
+  history.push({role:'user',content:text});
+  if(!brain){ const r=offline(text); history.push({role:'assistant',content:r.text}); setTimeout(()=>ferrinSays(r.text,r.tag),260); return; }
+  thinking=true; const pend=addMsg('FERRIN','Checking the manifest\u2026','f pending');
+  const recent=history.slice(-12).map(m=>`${m.role==='user'?'Skipper':'FERRIN'}: ${m.content}`).join('\n');
+  const prompt=`${persona()}\n\nConversation so far:\n${recent}\n\nWrite FERRIN's next reply.`;
+  try{
+    const raw=String(await brain(prompt,{history:history.slice(-12),state:agentState})||'');
+    const lt=takeLogTags(raw.replace(/^FERRIN:\s*/i,'')); logFacts(lt.facts,false);
+    const {tag,text:reply}=parseTag(lt.text);
+    thinking=false; pend.remove(); const words=(reply||'Copy.').split(/\s+/).slice(0,60).join(' ');
+    history.push({role:'assistant',content:words}); ferrinSays(words,tag);
+  }catch(e){
+    thinking=false; pend.remove(); const r=offline(text); history.push({role:'assistant',content:r.text});
+    ferrinSays('Relay\u2019s down. Working from the manifest. '+r.text, r.tag);
+  }
+}
+
+/* ---------------------------------------------------------------- voice in (Web Speech recognition) */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition; const mic=$('#mic'); let rec=null, heard='', recUser=null;
+if(!SR){ mic.disabled=true; mic.title='Speech recognition isn\u2019t available in this browser. Type instead.'; }
+function startListen(){
+  if(!SR||listening) return; stopSpeaking(); if(ctl) ctl.abort(); audio(); heard='';
+  try{ rec=new SR(); }catch(e){ return; }
+  rec.lang=navigator.language||'en-US'; rec.interimResults=true; rec.continuous=true; rec.maxAlternatives=1;
+  rec.onresult=e=>{ let s=''; for(let i=0;i<e.results.length;i++) s+=e.results[i][0].transcript; heard=s.trim(); if(!recUser) recUser=addMsg('You',heard||'…','u pending'); recUser.querySelector('span').textContent=heard||'…'; };
+  rec.onerror=e=>{ if(e.error==='not-allowed'||e.error==='service-not-allowed'){ addMsg('','The microphone is blocked in this view. Allow it in your browser, or type instead.','sys'); mic.disabled=true; }
+    else if(e.error==='no-speech'){ } else addMsg('','Didn\u2019t catch that ('+e.error+'). Try again, or type.','sys'); };
+  rec.onend=()=>{ listening=false; mic.setAttribute('aria-pressed','false'); const txt=heard; if(recUser){ recUser.classList.remove('pending'); } recUser=null; heard=''; if(txt) ask(txt); };
+  try{ rec.start(); listening=true; mic.setAttribute('aria-pressed','true'); SFX.listen(); }catch(e){ listening=false; }
+}
+function stopListen(){ if(rec&&listening){ try{ rec.stop(); }catch(e){} } }
+mic.addEventListener('pointerdown',e=>{ e.preventDefault(); mic.setPointerCapture(e.pointerId); startListen(); });
+mic.addEventListener('pointerup',stopListen); mic.addEventListener('pointercancel',stopListen);
+mic.addEventListener('keydown',e=>{ if((e.key===' '||e.key==='Enter')&&!e.repeat){ e.preventDefault(); listening?stopListen():startListen(); } });
+addEventListener('keydown',e=>{ if(e.code==='Space'&&!e.repeat&&!e.target.matches('input,select,textarea,button')&&$('#gate').classList.contains('gone')){ e.preventDefault(); startListen(); } });
+addEventListener('keyup',e=>{ if(e.code==='Space'&&!e.target.matches('input,select,textarea,button')) stopListen(); });
+$('#form').addEventListener('submit',e=>{ e.preventDefault(); const v=$('#text').value.trim(); if(!v) return; $('#text').value=''; audio(); stopSpeaking(); addMsg('You',v,'u'); ask(v); });
+
+/* ---------------------------------------------------------------- simulated agent status */
+const STATE_LINES={running:'running_start',blocked:'blocked',review:'review',done:'done',failed:'failed',idle:'idle_long'};
+const STATE_TAG={running:'idle',blocked:'waiting',review:'review',done:'jump',failed:'failed',idle:'idle'};
+document.querySelectorAll('[data-st]').forEach(b=>b.onclick=()=>{
+  agentState=b.dataset.st; document.querySelectorAll('[data-st]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  audio(); if(agentState==='done') SFX.done(); else if(agentState==='failed') SFX.fault(); else if(agentState==='blocked') SFX.blocked();
+  const line=pick(LINES.lines[STATE_LINES[agentState]]); addMsg('','Agent status: '+b.textContent,'sys'); setTimeout(()=>ferrinSays(line,STATE_TAG[agentState]),agentState==='done'?700:350);
+});
+
+/* ---------------------------------------------------------------- scripted line browser */
+const LABEL={materialize:'Channel open',greet_morning:'Morning',greet_evening:'Evening',greet_late:'Late night',running_start:'Work starts',running_long:'Long run',blocked:'Blocked',done:'Done',failed:'Failed',review:'Review',idle_long:'Quiet watch',wave:'Hello',goodbye:'Goodbye',egg_longwake:'Easter egg: LONGWAKE',egg_perimeter:'Easter egg: Perimeter Sweep',egg_commendation:'Commendation',egg_log:'Lore log found',egg_ballast:'Ballast Tag'};
+const linesEl=$('#lines');
+Object.entries(LINES.lines).forEach(([k,arr])=>{ const h=document.createElement('div'); h.textContent=LABEL[k]||k; linesEl.appendChild(h);
+  arr.forEach(s=>{ const b=document.createElement('button'); b.type='button'; b.textContent=s; b.onclick=()=>{ audio(); ferrinSays(s, k==='failed'?'failed':k==='wave'?'wave':k==='done'?'jump':null); }; linesEl.appendChild(b); }); });
+
+/* ---------------------------------------------------------------- open channel */
+$('#open').onclick=()=>{
+  $('#gate').classList.add('gone'); audio();
+  if(synth){ const warm=new SpeechSynthesisUtterance(''); synth.speak(warm); }
+  const h=new Date().getHours(); const key=h<5||h>=23?'greet_late':h<12?'greet_morning':h>=18?'greet_evening':'materialize';
+  const line=pick(LINES.lines[key]);
+  addMsg('','Channel open. Hold the mic or Space to talk.','sys');
+  setTimeout(()=>{ if(!greeted){ greeted=true; ferrinSays(line,'wave'); } }, Math.max(200,(7.6-bootT)*1000));
+  $('#text').focus({preventScroll:true});
+};
+
+/* ---------------------------------------------------------------- ship's log controls */
+if(MEM){
+  $('#memOn').onchange=e=>{ MEM.enabled=e.target.checked; addMsg('',MEM.enabled?'Ship\u2019s log on.':'Ship\u2019s log off. Nothing new will be recorded.','sys'); };
+  $('#memWipe').onclick=()=>{ if(confirm('Wipe everything FERRIN remembers in this browser?')){ MEM.wipe(); renderMem(); ferrinSays('Log wiped. Clean pages, Skipper.','idle'); } };
+  $('#memExport').onclick=()=>{ const b=new Blob([MEM.exportJSON()],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='ferrin-ships-log.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); };
+  $('#memImport').onchange=async e=>{ const f=e.target.files[0]; if(!f) return; try{ const n=MEM.importJSON(await f.text()); renderMem(); addMsg('',`Imported ${n} entr${n===1?'y':'ies'}.`,'sys'); }catch(err){ addMsg('','That file isn\u2019t a FERRIN ship\u2019s log.','sys'); } e.target.value=''; };
+}
+renderMem();
+
+/* ---------------------------------------------------------------- loop */
+let last=performance.now();
+function frame(now){ const dt=Math.min(.05,(now-last)/1000); last=now; animate(dt); placeCamera(); if(composer) composer.render(); else renderer.render(scene,camera); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+setTimeout(()=>$('#loading').classList.add('gone'),400);
+})();
+
+</script>
+</body>
+</html>
